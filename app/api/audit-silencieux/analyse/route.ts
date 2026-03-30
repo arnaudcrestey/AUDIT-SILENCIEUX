@@ -27,8 +27,23 @@ export async function POST(request: Request) {
 
     const data = await response.json();
 
+    if (!response.ok) {
+      return NextResponse.json(
+        {
+          summary: `[TEST IA] ERREUR API ${response.status}`,
+          expressedMessage: JSON.stringify(data).slice(0, 500),
+          perceivedMessage: "ok",
+          mainGap: "ok",
+          recommendation: "ok"
+        },
+        { status: 200 }
+      );
+    }
+
     const text =
-      data.output?.[0]?.content?.[0]?.text || "PAS DE RÉPONSE IA";
+      typeof data.output_text === "string" && data.output_text.trim()
+        ? data.output_text.trim()
+        : "PAS DE RÉPONSE IA";
 
     return NextResponse.json({
       summary: `[TEST IA] ${text}`,
@@ -38,11 +53,15 @@ export async function POST(request: Request) {
       recommendation: "ok"
     });
   } catch (error) {
-    console.error(error);
-
     return NextResponse.json(
-      { error: "erreur serveur" },
-      { status: 500 }
+      {
+        summary: "[TEST IA] ERREUR SERVEUR",
+        expressedMessage: error instanceof Error ? error.message : "Erreur inconnue",
+        perceivedMessage: "ok",
+        mainGap: "ok",
+        recommendation: "ok"
+      },
+      { status: 200 }
     );
   }
 }

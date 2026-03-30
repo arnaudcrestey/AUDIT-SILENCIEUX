@@ -65,8 +65,8 @@ export function buildFallbackAudit(content: string): AuditAnalysisResult {
   const preview = buildPreview(normalized);
   const signals = detectSignals(normalized);
 
-  let summary =
-    "Votre activité renvoie une impression sérieuse, mais sa lecture d’entrée ne donne pas encore une direction assez claire pour déclencher une décision rapide.";
+  summary:
+  "[FALLBACK] Votre activité présente déjà des signaux solides, mais son entrée reste encore un peu dense ou dispersée pour créer une adhésion immédiate.",
 
   let expressedMessage =
     `Vous montrez surtout votre niveau d’exigence, votre posture et une partie de votre savoir-faire. Extrait détecté : « ${preview} ».`;

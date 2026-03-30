@@ -5,6 +5,76 @@ import { attachSessionResult } from "@/lib/audit-storage";
 import { validateAnalysePayload } from "@/lib/validations";
 import type { AuditAnalysisResult } from "@/lib/audit-types";
 
+function isUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+async function extractWebsiteContent(url: string) {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "User-Agent": "Mozilla/5.0 AuditSilencieux/1.0"
+    },
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error("Impossible de lire ce site.");
+  }
+
+  const html = await response.text();
+
+  const text = html
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<noscript[^>]*>[\s\S]*?<\/noscript>/gi, " ")
+    .replace(/<svg[^>]*>[\s\S]*?<\/svg>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return text.slice(0, 8000);
+}
+
+async function normalizeContent(content: string, sourceType?: string) {
+  const trimmedContent = content.trim();
+
+  const shouldTryUrl =
+    sourceType === "url" ||
+    sourceType === "website" ||
+    isUrl(trimmedContent);
+
+  if (!shouldTryUrl) {
+    return {
+      normalizedContent: trimmedContent,
+      normalizedSourceType: sourceType ?? "text"
+    };
+  }
+
+  try {
+    const websiteContent = await extractWebsiteContent(trimmedContent);
+
+    if (!websiteContent) {
+      throw new Error("Contenu vide");
+    }
+
+    return {
+      normalizedContent: websiteContent,
+      normalizedSourceType: "url"
+    };
+  } catch {
+    return {
+      normalizedContent: trimmedContent,
+      normalizedSourceType: "url"
+    };
+  }
+}
+
 async function runModelAnalysis(content: string, sourceType = "mixed") {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return null;
@@ -48,10 +118,19 @@ export async function POST(request: Request) {
 
     const { content, sourceType, sessionId } = validation.data;
 
-    let finalResult: AuditAnalysisResult = buildFallbackAudit(content);
+    const { normalizedContent, normalizedSourceType } = await normalizeContent(
+      content,
+      sourceType
+    );
+
+    let finalResult: AuditAnalysisResult = buildFallbackAudit(normalizedContent);
 
     try {
-      const modelOutput = await runModelAnalysis(content, sourceType);
+      const modelOutput = await runModelAnalysis(
+        normalizedContent,
+        normalizedSourceType
+      );
+
       if (modelOutput) {
         const parsed = parseAuditResult(modelOutput);
         if (parsed) {

@@ -38,7 +38,13 @@ async function extractWebsiteContent(url: string) {
     .replace(/\s+/g, " ")
     .trim();
 
-  return text.slice(0, 8000);
+  const cleaned = text
+    .split(". ")
+    .filter((sentence) => sentence.trim().length > 40)
+    .slice(0, 20)
+    .join(". ");
+
+  return cleaned.slice(0, 4000);
 }
 
 async function normalizeContent(content: string, sourceType?: string) {
@@ -47,12 +53,13 @@ async function normalizeContent(content: string, sourceType?: string) {
   const shouldTryUrl =
     sourceType === "url" ||
     sourceType === "website" ||
+    sourceType === "site" ||
     isUrl(trimmedContent);
 
   if (!shouldTryUrl) {
     return {
       normalizedContent: trimmedContent,
-      normalizedSourceType: sourceType ?? "text"
+      normalizedSourceType: sourceType ?? "mixed"
     };
   }
 
@@ -65,14 +72,14 @@ async function normalizeContent(content: string, sourceType?: string) {
 
     return {
       normalizedContent: websiteContent,
-      normalizedSourceType: "url"
+      normalizedSourceType: "site"
     };
   } catch (error) {
     console.error("URL extraction error:", error);
 
     return {
       normalizedContent: `Site fourni : ${trimmedContent}`,
-      normalizedSourceType: "url"
+      normalizedSourceType: "site"
     };
   }
 }
@@ -125,9 +132,6 @@ export async function POST(request: Request) {
       content,
       sourceType
     );
-
-    console.log("Analyse sourceType:", normalizedSourceType);
-    console.log("Analyse content preview:", normalizedContent.slice(0, 300));
 
     let finalResult: AuditAnalysisResult = buildFallbackAudit(normalizedContent);
 

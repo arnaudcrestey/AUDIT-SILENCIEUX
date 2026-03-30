@@ -2,7 +2,13 @@ import type { AuditAnalysisResult } from "@/lib/audit-types";
 
 export function parseAuditResult(raw: string): AuditAnalysisResult | null {
   try {
-    const parsed = JSON.parse(raw) as Partial<AuditAnalysisResult>;
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+
+    if (!jsonMatch) {
+      return null;
+    }
+
+    const parsed = JSON.parse(jsonMatch[0]) as Partial<AuditAnalysisResult>;
 
     if (
       typeof parsed.summary !== "string" ||

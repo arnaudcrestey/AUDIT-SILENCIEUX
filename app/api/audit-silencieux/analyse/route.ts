@@ -155,18 +155,21 @@ export async function POST(request: Request) {
         normalizedSourceType
       );
 
-      if (!modelOutput) {
-        console.log("NO MODEL OUTPUT -> USING FALLBACK");
-      } else {
-        const parsed = parseAuditResult(modelOutput);
+     if (!modelOutput) {
+  console.log("NO MODEL OUTPUT -> USING FALLBACK");
+} else {
+  const parsed = parseAuditResult(modelOutput);
 
-        if (!parsed) {
-          console.log("MODEL OUTPUT PARSE FAILED -> USING FALLBACK");
-        } else {
-          console.log("MODEL OUTPUT PARSED SUCCESSFULLY");
-          finalResult = parsed;
-        }
-      }
+  if (!parsed) {
+    console.log("MODEL OUTPUT PARSE FAILED -> USING FALLBACK");
+  } else {
+    console.log("MODEL OUTPUT PARSED SUCCESSFULLY");
+    finalResult = {
+      ...parsed,
+      summary: `[IA ACTIVE] ${parsed.summary}`
+    };
+  }
+}
     } catch (error) {
       console.error("Model analysis error:", error);
     }

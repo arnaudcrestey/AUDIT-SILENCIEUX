@@ -86,7 +86,11 @@ async function normalizeContent(content: string, sourceType?: string) {
 
 async function runModelAnalysis(content: string, sourceType = "mixed") {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return null;
+
+  if (!apiKey) {
+    console.error("OPENAI_API_KEY manquante");
+    return null;
+  }
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -106,7 +110,9 @@ async function runModelAnalysis(content: string, sourceType = "mixed") {
   });
 
   if (!response.ok) {
-    console.error("OpenAI error:", response.status, await response.text());
+    const errorText = await response.text();
+    console.error("OpenAI error status:", response.status);
+    console.error("OpenAI error body:", errorText);
     return null;
   }
 
@@ -114,7 +120,11 @@ async function runModelAnalysis(content: string, sourceType = "mixed") {
     choices?: Array<{ message?: { content?: string } }>;
   };
 
-  return payload.choices?.[0]?.message?.content ?? null;
+  const modelContent = payload.choices?.[0]?.message?.content ?? null;
+
+  console.log("MODEL RAW OUTPUT:", modelContent);
+
+  return modelContent;
 }
 
 export async function POST(request: Request) {
@@ -133,7 +143,11 @@ export async function POST(request: Request) {
       sourceType
     );
 
+    console.log("NORMALIZED SOURCE TYPE:", normalizedSourceType);
+    console.log("NORMALIZED CONTENT PREVIEW:", normalizedContent.slice(0, 500));
+
     let finalResult: AuditAnalysisResult = buildFallbackAudit(normalizedContent);
+    console.log("FALLBACK GENERATED");
 
     try {
       const modelOutput = await runModelAnalysis(
@@ -141,9 +155,15 @@ export async function POST(request: Request) {
         normalizedSourceType
       );
 
-      if (modelOutput) {
+      if (!modelOutput) {
+        console.log("NO MODEL OUTPUT -> USING FALLBACK");
+      } else {
         const parsed = parseAuditResult(modelOutput);
-        if (parsed) {
+
+        if (!parsed) {
+          console.log("MODEL OUTPUT PARSE FAILED -> USING FALLBACK");
+        } else {
+          console.log("MODEL OUTPUT PARSED SUCCESSFULLY");
           finalResult = parsed;
         }
       }

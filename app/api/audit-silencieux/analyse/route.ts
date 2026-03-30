@@ -24,7 +24,7 @@ async function extractWebsiteContent(url: string) {
   });
 
   if (!response.ok) {
-    throw new Error("Impossible de lire ce site.");
+    throw new Error(`Impossible de lire ce site (${response.status}).`);
   }
 
   const html = await response.text();
@@ -59,17 +59,19 @@ async function normalizeContent(content: string, sourceType?: string) {
   try {
     const websiteContent = await extractWebsiteContent(trimmedContent);
 
-    if (!websiteContent) {
-      throw new Error("Contenu vide");
+    if (!websiteContent || websiteContent.length < 80) {
+      throw new Error("Contenu site trop court ou vide.");
     }
 
     return {
       normalizedContent: websiteContent,
       normalizedSourceType: "url"
     };
-  } catch {
+  } catch (error) {
+    console.error("URL extraction error:", error);
+
     return {
-      normalizedContent: trimmedContent,
+      normalizedContent: `Site fourni : ${trimmedContent}`,
       normalizedSourceType: "url"
     };
   }
@@ -97,6 +99,7 @@ async function runModelAnalysis(content: string, sourceType = "mixed") {
   });
 
   if (!response.ok) {
+    console.error("OpenAI error:", response.status, await response.text());
     return null;
   }
 
@@ -123,6 +126,9 @@ export async function POST(request: Request) {
       sourceType
     );
 
+    console.log("Analyse sourceType:", normalizedSourceType);
+    console.log("Analyse content preview:", normalizedContent.slice(0, 300));
+
     let finalResult: AuditAnalysisResult = buildFallbackAudit(normalizedContent);
 
     try {
@@ -137,8 +143,8 @@ export async function POST(request: Request) {
           finalResult = parsed;
         }
       }
-    } catch {
-      // fallback déjà défini
+    } catch (error) {
+      console.error("Model analysis error:", error);
     }
 
     if (sessionId) {
@@ -146,7 +152,9 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(finalResult, { status: 200 });
-  } catch {
+  } catch (error) {
+    console.error("Analyse route error:", error);
+
     return NextResponse.json(
       {
         error: "Une erreur serveur est survenue pendant l’analyse."

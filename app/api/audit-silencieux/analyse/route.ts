@@ -100,8 +100,7 @@ async function runModelAnalysis(content: string, sourceType = "mixed") {
     },
     body: JSON.stringify({
       model: "gpt-4.1-mini",
-      temperature: 0.2,
-      response_format: { type: "json_object" },
+      temperature: 0.3,
       messages: [
         { role: "system", content: AUDIT_SYSTEM_PROMPT },
         { role: "user", content: buildAuditUserPrompt(content, sourceType) }
@@ -155,21 +154,21 @@ export async function POST(request: Request) {
         normalizedSourceType
       );
 
-     if (!modelOutput) {
-  console.log("NO MODEL OUTPUT -> USING FALLBACK");
-} else {
-  const parsed = parseAuditResult(modelOutput);
+      if (!modelOutput) {
+        console.log("NO MODEL OUTPUT -> USING FALLBACK");
+      } else {
+        const parsed = parseAuditResult(modelOutput);
 
-  if (!parsed) {
-    console.log("MODEL OUTPUT PARSE FAILED -> USING FALLBACK");
-  } else {
-    console.log("MODEL OUTPUT PARSED SUCCESSFULLY");
-    finalResult = {
-      ...parsed,
-      summary: `[IA ACTIVE] ${parsed.summary}`
-    };
-  }
-}
+        if (!parsed) {
+          console.log("MODEL OUTPUT PARSE FAILED -> USING FALLBACK");
+        } else {
+          console.log("MODEL OUTPUT PARSED SUCCESSFULLY");
+          finalResult = {
+            ...parsed,
+            summary: `[IA ACTIVE] ${parsed.summary}`
+          };
+        }
+      }
     } catch (error) {
       console.error("Model analysis error:", error);
     }

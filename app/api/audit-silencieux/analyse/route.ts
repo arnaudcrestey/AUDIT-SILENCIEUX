@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -21,18 +21,14 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         model: "gpt-4.1-mini",
-        messages: [
-          {
-            role: "user",
-            content: `Analyse ce texte en une phrase : ${content}`
-          }
-        ]
+        input: `Analyse ce texte en une phrase : ${content}`
       })
     });
 
     const data = await response.json();
 
-    const text = data.choices?.[0]?.message?.content || "PAS DE RÉPONSE IA";
+    const text =
+      data.output?.[0]?.content?.[0]?.text || "PAS DE RÉPONSE IA";
 
     return NextResponse.json({
       summary: `[TEST IA] ${text}`,
@@ -41,7 +37,9 @@ export async function POST(request: Request) {
       mainGap: "ok",
       recommendation: "ok"
     });
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       { error: "erreur serveur" },
       { status: 500 }

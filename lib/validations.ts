@@ -6,7 +6,18 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-export function validateAnalysePayload(payload: unknown):
+function isUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+export function validateAnalysePayload(
+  payload: unknown
+):
   | { ok: true; data: AuditAnalyseInput }
   | { ok: false; error: string } {
   if (!isRecord(payload)) {
@@ -22,7 +33,9 @@ export function validateAnalysePayload(payload: unknown):
     return { ok: false, error: "Le champ content est requis." };
   }
 
-  if (content.length < 40) {
+  const isWebsiteUrl = isUrl(content);
+
+  if (!isWebsiteUrl && content.length < 40) {
     return {
       ok: false,
       error: "Ajoutez un contenu un peu plus détaillé (minimum 40 caractères)."
@@ -50,7 +63,9 @@ export function validateAnalysePayload(payload: unknown):
   };
 }
 
-export function validateLeadPayload(payload: unknown):
+export function validateLeadPayload(
+  payload: unknown
+):
   | { ok: true; data: { email: string; name?: string; message?: string; sessionId?: string } }
   | { ok: false; error: string } {
   if (!isRecord(payload)) {

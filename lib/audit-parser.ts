@@ -65,8 +65,8 @@ export function buildFallbackAudit(content: string): AuditAnalysisResult {
   const preview = buildPreview(normalized);
   const signals = detectSignals(normalized);
 
-  summary:
-  "[FALLBACK] Votre activité présente déjà des signaux solides, mais son entrée reste encore un peu dense ou dispersée pour créer une adhésion immédiate.",
+  let summary =
+    "[FALLBACK] Votre activité présente déjà des signaux solides, mais son entrée reste encore un peu dense ou dispersée pour créer une adhésion immédiate.";
 
   let expressedMessage =
     `Vous montrez surtout votre niveau d’exigence, votre posture et une partie de votre savoir-faire. Extrait détecté : « ${preview} ».`;
@@ -82,7 +82,7 @@ export function buildFallbackAudit(content: string): AuditAnalysisResult {
 
   if (signals.hasExpertise && !signals.hasOfferClarity) {
     summary =
-      "Votre activité paraît experte et structurée, mais elle reste difficile à saisir rapidement pour un nouveau visiteur.";
+      "[FALLBACK] Votre activité paraît experte et structurée, mais elle reste difficile à saisir rapidement pour un nouveau visiteur.";
     mainGap =
       "L’expertise est visible, mais l’offre d’entrée n’est pas assez formulée pour orienter naturellement la compréhension.";
     recommendation =
@@ -91,7 +91,7 @@ export function buildFallbackAudit(content: string): AuditAnalysisResult {
 
   if (signals.hasExpertise && signals.hasOfferClarity && !signals.hasOutcome) {
     summary =
-      "Votre activité semble claire dans son intention, mais elle n’indique pas encore assez nettement le résultat concret que le client peut attendre.";
+      "[FALLBACK] Votre activité semble claire dans son intention, mais elle n’indique pas encore assez nettement le résultat concret que le client peut attendre.";
     perceivedMessage =
       "Le visiteur comprend votre sérieux et votre logique, mais peut hésiter sur l’intérêt immédiat de passer à l’action.";
     mainGap =
@@ -102,7 +102,7 @@ export function buildFallbackAudit(content: string): AuditAnalysisResult {
 
   if (signals.hasExpertise && signals.hasOfferClarity && signals.hasOutcome) {
     summary =
-      "Votre activité présente déjà des signaux solides, mais son entrée reste encore un peu dense ou dispersée pour créer une adhésion immédiate.";
+      "[FALLBACK] Votre activité présente déjà des signaux solides, mais son entrée reste encore un peu dense ou dispersée pour créer une adhésion immédiate.";
     perceivedMessage =
       "Le visiteur perçoit une offre sérieuse, mais peut avoir besoin d’un cadrage plus direct pour comprendre en quelques secondes pourquoi avancer avec vous.";
     mainGap =

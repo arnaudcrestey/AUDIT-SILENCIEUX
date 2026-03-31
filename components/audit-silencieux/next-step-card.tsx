@@ -7,7 +7,8 @@ type NextStepCardProps = {
   buttonLabel?: string;
   mainGap?: string;
   recommendation?: string;
-  subjectName?: string;
+  expressedMessage?: string;
+  perceivedMessage?: string;
 };
 
 function getButtonLabel(mainGap?: string, buttonLabel?: string) {
@@ -68,53 +69,65 @@ function getRedirectPath(mainGap?: string) {
   return "/audit-silencieux/optimisation";
 }
 
-function buildIntro(subjectName?: string) {
-  if (subjectName && subjectName.trim()) {
-    return `Pour ${subjectName.trim()}, un point mérite d’être clarifié pour rendre l’offre plus immédiatement compréhensible.`;
-  }
-
-  return "Un point mérite d’être clarifié pour rendre l’offre plus immédiatement compréhensible.";
+function normalizeText(text?: string) {
+  return (text ?? "").replace(/\s+/g, " ").trim();
 }
 
-function buildMiddle(mainGap?: string) {
-  const gap = (mainGap ?? "").toLowerCase();
-
-  if (
-    gap.includes("ne sait pas") ||
-    gap.includes("ne comprend pas") ||
-    gap.includes("ce qui est vendu") ||
-    gap.includes("ce qui est proposé") ||
-    gap.includes("ce que je peux obtenir")
-  ) {
-    return "Le diagnostic montre que le visiteur perçoit une intention sérieuse, mais ne parvient pas encore à identifier clairement ce qu’il peut obtenir, ni pourquoi cette offre lui serait utile.";
-  }
-
-  if (
-    gap.includes("trop large") ||
-    gap.includes("abstrait") ||
-    gap.includes("générique") ||
-    gap.includes("reste flou")
-  ) {
-    return "Le message donne une direction, mais il reste encore trop large pour permettre une projection rapide dans un service, un usage ou un résultat concret.";
-  }
-
-  if (
-    gap.includes("résultats") ||
-    gap.includes("bénéfice") ||
-    gap.includes("projection")
-  ) {
-    return "Le fond paraît sérieux, mais les repères concrets manquent encore pour transformer l’intérêt initial en compréhension utile et en envie d’aller plus loin.";
-  }
-
-  return "Le diagnostic montre qu’il existe déjà une base crédible, mais que certains repères restent trop implicites pour produire une compréhension immédiate et rassurante.";
+function stripLeadingSubject(text: string) {
+  return text
+    .replace(
+      /^([A-ZÀ-ÖØ-Ý0-9][\wÀ-ÖØ-öø-ÿ.\-]*(?:\s+[A-ZÀ-ÖØ-Ý0-9][\wÀ-ÖØ-öø-ÿ.\-]*){0,4})\s+(propose|conçoit|développe|présente|offre|met en place|crée)\s+/i,
+      ""
+    )
+    .trim();
 }
 
-function buildOutro(recommendation?: string) {
-  if (recommendation && recommendation.trim()) {
-    return `La suite consiste à transformer ce constat en structure plus nette, en travaillant notamment ce point : ${recommendation.trim()}`;
-  }
+function extractSubjectName(expressedMessage?: string) {
+  const value = normalizeText(expressedMessage);
 
-  return "La suite consiste à transformer ce constat en structure plus nette : préciser ce que vous proposez, pour qui, avec quel bénéfice concret, et comment le rendre plus lisible sur votre page.";
+  const match = value.match(
+    /^([A-ZÀ-ÖØ-Ý0-9][\wÀ-ÖØ-öø-ÿ.\-]*(?:\s+[A-ZÀ-ÖØ-Ý0-9][\wÀ-ÖØ-öø-ÿ.\-]*){0,4})\s+(propose|conçoit|développe|présente|offre|met en place|crée)\b/
+  );
+
+  if (!match) return "";
+
+  return match[1].trim();
+}
+
+function buildParagraphs({
+  expressedMessage,
+  perceivedMessage,
+  mainGap,
+  recommendation
+}: {
+  expressedMessage?: string;
+  perceivedMessage?: string;
+  mainGap?: string;
+  recommendation?: string;
+}) {
+  const subjectName = extractSubjectName(expressedMessage);
+  const expressed = stripLeadingSubject(normalizeText(expressedMessage));
+  const perceived = normalizeText(perceivedMessage);
+  const gap = normalizeText(mainGap);
+  const reco = normalizeText(recommendation);
+
+  const p1 = subjectName
+    ? `Dans le cas de ${subjectName}, l’audit confirme qu’il existe déjà une intention sérieuse et une base de valeur perçue.`
+    : `Cet audit confirme qu’il existe déjà une intention sérieuse et une base de valeur perçue.`;
+
+  const p2 = gap
+    ? `Le point à travailler n’est pas la qualité de fond, mais le passage entre intention et compréhension immédiate : ${gap.charAt(0).toLowerCase() + gap.slice(1)}`
+    : perceived
+      ? `Le point à travailler n’est pas la qualité de fond, mais la manière dont l’offre est comprise au premier contact : ${perceived.charAt(0).toLowerCase() + perceived.slice(1)}`
+      : `Le point à travailler n’est pas la qualité de fond, mais la manière dont l’offre est comprise au premier contact.`;
+
+  const p3 = reco
+    ? `La suite consiste à transformer ce diagnostic en structure plus nette, en travaillant en priorité ce levier : ${reco.charAt(0).toLowerCase() + reco.slice(1)}`
+    : expressed
+      ? `La suite consiste à rendre cette proposition plus lisible, plus précise et plus directement exploitable dès les premiers blocs de la page.`
+      : `La suite consiste à rendre l’offre plus lisible, plus précise et plus directement exploitable dès les premiers blocs de la page.`;
+
+  return [p1, p2, p3];
 }
 
 export function NextStepCard({
@@ -122,18 +135,20 @@ export function NextStepCard({
   buttonLabel,
   mainGap,
   recommendation,
-  subjectName
+  expressedMessage,
+  perceivedMessage
 }: NextStepCardProps) {
   const router = useRouter();
 
   const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
   const redirectPath = getRedirectPath(mainGap);
 
-  const paragraphs = [
-    buildIntro(subjectName),
-    buildMiddle(mainGap),
-    buildOutro(recommendation)
-  ];
+  const paragraphs = buildParagraphs({
+    expressedMessage,
+    perceivedMessage,
+    mainGap,
+    recommendation
+  });
 
   return (
     <section className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">

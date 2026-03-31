@@ -61,12 +61,11 @@ export default function ResultatPage() {
 
         <RecommendationCard recommendation={result.recommendation} />
 
-        <NextStepCard
-          mainGap={result.mainGap}
-          recommendation={result.recommendation}
-          expressedMessage={result.expressedMessage}
-          perceivedMessage={result.perceivedMessage}
-        />
+       <NextStepCard
+  mainGap={result.mainGap}
+  recommendation={result.recommendation}
+  perceivedMessage={result.perceivedMessage}
+/>
       </div>
     </AuditShell>
   );

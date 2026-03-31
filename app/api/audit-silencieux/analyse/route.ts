@@ -145,18 +145,16 @@ async function runModelAnalysis(content: string, sourceType = "mixed") {
     return null;
   }
 
-  let text = "";
-
   try {
-    text =
+    const text =
       data.output?.[0]?.content?.[0]?.text ||
       data.output_text ||
       "";
-  } catch {
-    text = "";
-  }
 
-  return text || null;
+    return typeof text === "string" && text.trim() ? text.trim() : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function POST(request: Request) {

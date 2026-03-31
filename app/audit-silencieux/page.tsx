@@ -90,11 +90,9 @@ export default function AuditSilencieuxPage() {
           </aside>
         </section>
 
-        <section className="rounded-[34px] border border-audit-border-subtle bg-white/82 p-4 shadow-[0_20px_64px_rgba(31,39,64,0.055)] sm:p-5 lg:p-6">
-          <div className="rounded-[28px] border border-audit-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(248,250,255,0.90)_100%)] p-4 sm:p-5 lg:p-5">
-            <AuditInputCard />
-          </div>
-        </section>
+        <section className="mt-6">
+  <AuditInputCard />
+</section>
 
         <div className="pt-0.5">
           <TrustMicrocopy />

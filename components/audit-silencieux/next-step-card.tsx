@@ -14,34 +14,66 @@ function cleanMainGap(text: string) {
     .replace(/^je comprends que\s*/i, "")
     .replace(/^le visiteur\s*/i, "")
     .replace(/^on\s*/i, "")
-    .replace(/^bloque\s*/i, "")
+    .replace(/^bloque\s*(à|au|sur)?\s*/i, "")
     .trim();
 }
 
 function getButtonLabel(mainGap?: string, buttonLabel?: string) {
   if (buttonLabel) return buttonLabel;
 
-  const normalizedGap = (mainGap ?? "").toLowerCase();
+  const gap = (mainGap ?? "").toLowerCase();
 
   if (
-    normalizedGap.includes("ne sait pas") ||
-    normalizedGap.includes("ne comprend pas") ||
-    normalizedGap.includes("ce qui est réellement vendu") ||
-    normalizedGap.includes("ce qui est proposé")
+    gap.includes("ne sait pas") ||
+    gap.includes("ne comprend pas") ||
+    gap.includes("ce qui est vendu") ||
+    gap.includes("ce qui est proposé") ||
+    gap.includes("ce que je peux obtenir") ||
+    gap.includes("nature exacte de l'offre") ||
+    gap.includes("nature précise des services")
   ) {
     return "Clarifier votre offre";
   }
 
   if (
-    normalizedGap.includes("trop large") ||
-    normalizedGap.includes("abstrait") ||
-    normalizedGap.includes("trop générique") ||
-    normalizedGap.includes("manque de précision")
+    gap.includes("trop large") ||
+    gap.includes("abstrait") ||
+    gap.includes("générique") ||
+    gap.includes("manque de précision") ||
+    gap.includes("reste flou")
   ) {
     return "Structurer votre message";
   }
 
   return "Optimiser votre point d’entrée";
+}
+
+function getRedirectPath(mainGap?: string) {
+  const gap = (mainGap ?? "").toLowerCase();
+
+  if (
+    gap.includes("ne sait pas") ||
+    gap.includes("ne comprend pas") ||
+    gap.includes("ce qui est vendu") ||
+    gap.includes("ce qui est proposé") ||
+    gap.includes("ce que je peux obtenir") ||
+    gap.includes("nature exacte de l'offre") ||
+    gap.includes("nature précise des services")
+  ) {
+    return "/audit-silencieux/clarification";
+  }
+
+  if (
+    gap.includes("trop large") ||
+    gap.includes("abstrait") ||
+    gap.includes("générique") ||
+    gap.includes("manque de précision") ||
+    gap.includes("reste flou")
+  ) {
+    return "/audit-silencieux/structuration";
+  }
+
+  return "/audit-silencieux/optimisation";
 }
 
 export function NextStepCard({
@@ -55,8 +87,8 @@ export function NextStepCard({
   const cleanedGap = mainGap ? cleanMainGap(mainGap) : "";
 
   const intro = cleanedGap
-    ? `Un point ressort clairement : ${cleanedGap}`
-    : `Votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.`;
+    ? `Ce qui freine aujourd’hui : ${cleanedGap}`
+    : "Votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.";
 
   const finalText =
     text ??
@@ -67,6 +99,7 @@ Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qu
 La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`;
 
   const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
+  const redirectPath = getRedirectPath(mainGap);
 
   const paragraphs = finalText
     .split("\n\n")
@@ -82,13 +115,13 @@ La suite consiste à identifier concrètement ce que vous devez formuler en prio
 
         <div className="mt-3 space-y-4 text-[17px] leading-relaxed text-audit-subtle">
           {paragraphs.map((paragraph, index) => (
-            <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+            <p key={`${index}-${paragraph.slice(0, 30)}`}>{paragraph}</p>
           ))}
         </div>
 
         <button
           type="button"
-          onClick={() => router.push("/audit-silencieux/aller-plus-loin")}
+          onClick={() => router.push(redirectPath)}
           className="mt-6 inline-flex items-center justify-center rounded-xl bg-audit-blue px-6 py-3 text-[16px] font-medium text-white transition hover:bg-audit-blue-hover"
         >
           {computedButtonLabel}

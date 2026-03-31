@@ -87,7 +87,7 @@ export function NextStepCard({
   const cleanedGap = mainGap ? cleanMainGap(mainGap) : "";
 
   const intro = cleanedGap
-    ? `Ce qui freine aujourd’hui : ${cleanedGap}`
+    ? `${cleanedGap.charAt(0).toUpperCase() + cleanedGap.slice(1)}`
     : "Votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.";
 
   const finalText =

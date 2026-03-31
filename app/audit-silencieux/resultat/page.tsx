@@ -10,14 +10,9 @@ import { RecommendationCard } from "@/components/audit-silencieux/recommendation
 import { ResultSummaryCard } from "@/components/audit-silencieux/result-summary-card";
 import type { AuditAnalysisResult } from "@/lib/audit-types";
 
-type StoredAuditResult = AuditAnalysisResult & {
-  subjectName?: string;
-};
-
 export default function ResultatPage() {
   const router = useRouter();
   const [result, setResult] = useState<AuditAnalysisResult | null>(null);
-  const [subjectName, setSubjectName] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const rawResult = localStorage.getItem("audit_silencieux_result");
@@ -28,7 +23,7 @@ export default function ResultatPage() {
     }
 
     try {
-      const parsed = JSON.parse(rawResult) as StoredAuditResult;
+      const parsed = JSON.parse(rawResult) as AuditAnalysisResult;
 
       if (
         !parsed ||
@@ -42,17 +37,7 @@ export default function ResultatPage() {
         return;
       }
 
-      setResult({
-        summary: parsed.summary,
-        expressedMessage: parsed.expressedMessage,
-        perceivedMessage: parsed.perceivedMessage,
-        mainGap: parsed.mainGap,
-        recommendation: parsed.recommendation
-      });
-
-      if (typeof parsed.subjectName === "string" && parsed.subjectName.trim()) {
-        setSubjectName(parsed.subjectName.trim());
-      }
+      setResult(parsed);
     } catch {
       router.replace("/audit-silencieux");
     }
@@ -79,7 +64,8 @@ export default function ResultatPage() {
         <NextStepCard
           mainGap={result.mainGap}
           recommendation={result.recommendation}
-          subjectName={subjectName}
+          expressedMessage={result.expressedMessage}
+          perceivedMessage={result.perceivedMessage}
         />
       </div>
     </AuditShell>

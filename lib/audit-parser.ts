@@ -21,7 +21,7 @@ export function parseAuditResult(raw: string): AuditAnalysisResult | null {
     }
 
     return {
-      summary: parsed.summary.replace(/^\[(TEST IA|FALLBACK|IA ACTIVE)\]\s*/i, "").trim(),
+      summary: parsed.summary.trim(),
       expressedMessage: parsed.expressedMessage.trim(),
       perceivedMessage: parsed.perceivedMessage.trim(),
       mainGap: parsed.mainGap.trim(),

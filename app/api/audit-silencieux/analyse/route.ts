@@ -40,10 +40,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const text =
-      typeof data.output_text === "string" && data.output_text.trim()
-        ? data.output_text.trim()
-        : "PAS DE RÉPONSE IA";
+   let text = "PAS DE RÉPONSE IA";
+
+try {
+  text =
+    data.output?.[0]?.content?.[0]?.text ||
+    data.output_text ||
+    JSON.stringify(data).slice(0, 200);
+} catch {
+  text = "ERREUR LECTURE IA";
+}
 
     return NextResponse.json({
       summary: `[TEST IA] ${text}`,

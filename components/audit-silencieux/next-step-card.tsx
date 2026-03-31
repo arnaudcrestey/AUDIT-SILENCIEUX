@@ -19,7 +19,13 @@ function lowerFirst(text: string) {
   return text.charAt(0).toLowerCase() + text.slice(1);
 }
 
-function getProfile(mainGap?: string, perceived?: string) {
+function stripTrailingPunctuation(text: string) {
+  return text.replace(/\s*[.:;!?]+$/, "").trim();
+}
+
+type Profile = "clarity" | "structure" | "conversion";
+
+function getProfile(mainGap?: string, perceived?: string): Profile {
   const combined = `${mainGap ?? ""} ${perceived ?? ""}`.toLowerCase();
 
   if (
@@ -27,7 +33,11 @@ function getProfile(mainGap?: string, perceived?: string) {
     combined.includes("ne comprend pas") ||
     combined.includes("ce qui est vendu") ||
     combined.includes("ce qui est proposé") ||
+    combined.includes("ce qu'il peut obtenir") ||
+    combined.includes("ce que je peux obtenir") ||
+    combined.includes("service exact") ||
     combined.includes("services") ||
+    combined.includes("prestations") ||
     combined.includes("offre")
   ) {
     return "clarity";
@@ -37,7 +47,9 @@ function getProfile(mainGap?: string, perceived?: string) {
     combined.includes("trop large") ||
     combined.includes("abstrait") ||
     combined.includes("générique") ||
-    combined.includes("flou")
+    combined.includes("flou") ||
+    combined.includes("manque de précision") ||
+    combined.includes("reste flou")
   ) {
     return "structure";
   }
@@ -48,13 +60,31 @@ function getProfile(mainGap?: string, perceived?: string) {
 function getButtonLabel(mainGap?: string, buttonLabel?: string) {
   if (buttonLabel) return buttonLabel;
 
-  const gap = (mainGap ?? "").toLowerCase();
+  const gap = normalize(mainGap).toLowerCase();
 
-  if (gap.includes("ne sait pas") || gap.includes("ce qui est")) {
+  if (
+    gap.includes("ne sait pas") ||
+    gap.includes("ne comprend pas") ||
+    gap.includes("ce qui est vendu") ||
+    gap.includes("ce qui est proposé") ||
+    gap.includes("ce qu'il peut obtenir") ||
+    gap.includes("ce que je peux obtenir") ||
+    gap.includes("service exact") ||
+    gap.includes("services") ||
+    gap.includes("prestations") ||
+    gap.includes("offre")
+  ) {
     return "Clarifier votre offre";
   }
 
-  if (gap.includes("abstrait") || gap.includes("flou")) {
+  if (
+    gap.includes("trop large") ||
+    gap.includes("abstrait") ||
+    gap.includes("générique") ||
+    gap.includes("flou") ||
+    gap.includes("manque de précision") ||
+    gap.includes("reste flou")
+  ) {
     return "Structurer votre message";
   }
 
@@ -62,62 +92,85 @@ function getButtonLabel(mainGap?: string, buttonLabel?: string) {
 }
 
 function getRedirectPath(mainGap?: string) {
-  const gap = (mainGap ?? "").toLowerCase();
+  const gap = normalize(mainGap).toLowerCase();
 
-  if (gap.includes("ne sait pas") || gap.includes("ce qui est")) {
+  if (
+    gap.includes("ne sait pas") ||
+    gap.includes("ne comprend pas") ||
+    gap.includes("ce qui est vendu") ||
+    gap.includes("ce qui est proposé") ||
+    gap.includes("ce qu'il peut obtenir") ||
+    gap.includes("ce que je peux obtenir") ||
+    gap.includes("service exact") ||
+    gap.includes("services") ||
+    gap.includes("prestations") ||
+    gap.includes("offre")
+  ) {
     return "/audit-silencieux/clarification";
   }
 
-  if (gap.includes("abstrait") || gap.includes("flou")) {
+  if (
+    gap.includes("trop large") ||
+    gap.includes("abstrait") ||
+    gap.includes("générique") ||
+    gap.includes("flou") ||
+    gap.includes("manque de précision") ||
+    gap.includes("reste flou")
+  ) {
     return "/audit-silencieux/structuration";
   }
 
   return "/audit-silencieux/optimisation";
 }
 
-function buildParagraphs(mainGap?: string, recommendation?: string, perceived?: string) {
-  const gap = normalize(mainGap);
-  const reco = normalize(recommendation);
-  const percep = normalize(perceived);
+function buildParagraphs(
+  mainGap?: string,
+  recommendation?: string,
+  perceivedMessage?: string
+) {
+  const gap = stripTrailingPunctuation(normalize(mainGap));
+  const reco = stripTrailingPunctuation(normalize(recommendation));
+  const perceived = stripTrailingPunctuation(normalize(perceivedMessage));
 
-  const profile = getProfile(gap, percep);
+  const profile = getProfile(gap, perceived);
 
-  // 1. Constat direct
-  let p1 = "Votre page transmet une intention sérieuse, mais le message ne se transforme pas encore en compréhension immédiate.";
+  let p1 =
+    "Votre page transmet une intention sérieuse, mais elle ne permet pas encore de comprendre immédiatement ce que vous proposez.";
 
   if (profile === "clarity") {
-    p1 = "Votre page donne une impression de qualité, mais l’offre n’est pas immédiatement identifiable.";
+    p1 =
+      "Votre page donne une impression de qualité, mais l’offre n’est pas immédiatement identifiable.";
   }
 
   if (profile === "structure") {
-    p1 = "Votre page est cohérente dans le fond, mais le message reste trop large pour être compris rapidement.";
+    p1 =
+      "Votre page est cohérente dans le fond, mais le message reste trop large pour être compris rapidement.";
   }
 
-  // 2. Impact utilisateur concret
-  let p2 = "Concrètement, le visiteur comprend l’intention globale, mais ne sait pas rapidement ce que vous proposez ni ce qu’il doit faire ensuite.";
+  let p2 =
+    "Un visiteur comprend l’intention générale, mais ne sait pas clairement ce qu’il peut obtenir ni à quelle situation votre proposition répond.";
 
   if (gap) {
-    p2 = `Concrètement, le visiteur comprend l’intention, mais bloque dès qu’il cherche à se projeter : ${lowerFirst(gap)}.`;
-  } else if (percep) {
-    p2 = `Concrètement, le visiteur perçoit une direction, mais manque de repères clairs : ${lowerFirst(percep)}.`;
+    p2 = `Le blocage se situe ici : ${lowerFirst(gap)}.`;
+  } else if (perceived) {
+    p2 = `Côté visiteur, cela se traduit ainsi : ${lowerFirst(perceived)}.`;
   }
 
-  // 3. Action claire
-  let p3 = "L’ajustement prioritaire consiste à rendre votre proposition explicite dès les premiers éléments visibles de la page.";
+  let p3 =
+    "L’ajustement prioritaire est de rendre votre offre explicite dès les premiers éléments visibles de la page.";
 
   if (reco) {
-    p3 = `L’ajustement prioritaire consiste à ${lowerFirst(reco)}.`;
+    p3 = reco.charAt(0).toUpperCase() + reco.slice(1) + ".";
   }
 
-  // 4. Punchline
-  let p4 = "L’enjeu n’est pas d’en dire plus, mais d’être compris immédiatement.";
+  let p4 = "Si le visiteur doit réfléchir, il ne s’engage pas.";
 
   if (profile === "structure") {
-    p4 = "L’enjeu n’est pas de complexifier, mais de clarifier.";
+    p4 = "Plus le message est net, plus la projection devient facile.";
   }
 
   if (profile === "conversion") {
-    p4 = "L’enjeu n’est pas de tout refaire, mais d’enlever les points de friction.";
+    p4 = "Ce n’est pas le fond qui freine ici, mais la fluidité de lecture.";
   }
 
   return [p1, p2, p3, p4];
@@ -132,7 +185,14 @@ export function NextStepCard({
 }: NextStepCardProps) {
   const router = useRouter();
 
-  const paragraphs = buildParagraphs(mainGap, recommendation, perceivedMessage);
+  const paragraphs = buildParagraphs(
+    mainGap,
+    recommendation,
+    perceivedMessage
+  );
+
+  const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
+  const redirectPath = getRedirectPath(mainGap);
 
   return (
     <section className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
@@ -146,18 +206,18 @@ export function NextStepCard({
         </h3>
 
         <div className="mt-4 space-y-4 text-[17px] leading-relaxed text-audit-subtle">
-          {paragraphs.map((p, i) => (
-            <p key={i}>{p}</p>
+          {paragraphs.map((paragraph, index) => (
+            <p key={`${index}-${paragraph.slice(0, 40)}`}>{paragraph}</p>
           ))}
         </div>
 
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3">
           <button
             type="button"
-            onClick={() => router.push(getRedirectPath(mainGap))}
+            onClick={() => router.push(redirectPath)}
             className="inline-flex items-center justify-center rounded-xl bg-audit-blue px-6 py-3 text-[16px] font-medium text-white transition hover:bg-audit-blue-hover"
           >
-            {getButtonLabel(mainGap, buttonLabel)}
+            {computedButtonLabel}
           </button>
 
           <span className="text-[14px] text-audit-subtle">

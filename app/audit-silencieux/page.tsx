@@ -19,13 +19,13 @@ export default function AuditSilencieuxPage() {
   rel="noreferrer"
   className="group inline-flex flex-col items-center text-center"
 >
-  <span className="font-serif text-[3rem] leading-[0.9] tracking-[-0.08em] text-audit-ink sm:text-[3.5rem]">
-    AC
-  </span>
+  <span className="font-serif text-[2.45rem] leading-[0.9] tracking-[-0.07em] text-audit-ink sm:text-[2.9rem]">
+  AC
+</span>
 
-  <span className="mt-0.5 block text-[1.02rem] font-medium leading-none tracking-[-0.02em] text-audit-ink sm:text-[1.12rem]">
-    arnaudcrestey.com
-  </span>
+  <span className="mt-0.5 block text-[0.92rem] font-normal leading-none tracking-[-0.01em] text-audit-ink sm:text-[0.98rem]">
+  arnaudcrestey.com
+</span>
 
   <span className="mt-3 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
 </a>

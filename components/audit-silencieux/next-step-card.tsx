@@ -91,24 +91,9 @@ function getButtonLabel(mainGap?: string, buttonLabel?: string) {
   return "Optimiser votre point d’entrée";
 }
 
-function getRedirectPath(mainGap?: string) {
-  const gap = normalize(mainGap).toLowerCase();
-
-  if (
-    gap.includes("ne sait pas") ||
-    gap.includes("ne comprend pas") ||
-    gap.includes("ce qui est vendu") ||
-    gap.includes("ce qui est proposé") ||
-    gap.includes("ce qu'il peut obtenir") ||
-    gap.includes("ce que je peux obtenir") ||
-    gap.includes("service exact") ||
-    gap.includes("services") ||
-    gap.includes("prestations") ||
-    gap.includes("offre")
-  ) {
-    return "/audit-silencieux/clarification";
-  }
-
+function getRedirectPath() {
+  return "/audit-silencieux/aller-plus-loin";
+}
   if (
     gap.includes("trop large") ||
     gap.includes("abstrait") ||

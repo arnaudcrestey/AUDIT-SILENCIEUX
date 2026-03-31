@@ -14,21 +14,21 @@ export default function AuditSilencieuxPage() {
       <div className="space-y-8 lg:space-y-10">
         <header className="flex items-start justify-between gap-4">
           <a
-            href="https://arnaudcrestey.com"
-            target="_blank"
-            rel="noreferrer"
-            className="group inline-flex flex-col items-start"
-          >
-            <span className="font-serif text-[3rem] leading-none tracking-[-0.08em] text-audit-ink sm:text-[3.5rem]">
-              AC
-            </span>
+  href="https://arnaudcrestey.com"
+  target="_blank"
+  rel="noreferrer"
+  className="group inline-flex flex-col items-center text-center"
+>
+  <span className="font-serif text-[3rem] leading-[0.9] tracking-[-0.08em] text-audit-ink sm:text-[3.5rem]">
+    AC
+  </span>
 
-            <span className="-mt-1 text-[1.02rem] font-medium tracking-[-0.02em] text-audit-ink sm:text-[1.12rem]">
-              arnaudcrestey.com
-            </span>
+  <span className="mt-0.5 block text-[1.02rem] font-medium leading-none tracking-[-0.02em] text-audit-ink sm:text-[1.12rem]">
+    arnaudcrestey.com
+  </span>
 
-            <span className="mt-2 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
-          </a>
+  <span className="mt-3 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
+</a>
 
           <div className="inline-flex items-center rounded-full border border-audit-border-subtle bg-white/80 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-audit-subtle shadow-audit-soft backdrop-blur-sm sm:text-[12px]">
             Diagnostic premium

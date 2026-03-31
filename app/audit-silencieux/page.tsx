@@ -11,7 +11,7 @@ const benefits = [
 export default function AuditSilencieuxPage() {
   return (
     <AuditShell>
-      <div className="space-y-8 lg:space-y-10">
+      <div className="space-y-8 lg:space-y-9">
         <header className="flex items-start justify-between gap-6">
           <a
             href="https://arnaudcrestey.com"
@@ -19,29 +19,29 @@ export default function AuditSilencieuxPage() {
             rel="noreferrer"
             className="group inline-flex flex-col items-center text-center"
           >
-            <span className="font-serif text-[2.45rem] leading-[0.9] tracking-[-0.07em] text-audit-ink sm:text-[2.9rem]">
+            <span className="font-serif text-[2.35rem] leading-[0.9] tracking-[-0.07em] text-audit-ink sm:text-[2.75rem]">
               AC
             </span>
 
-            <span className="mt-0.5 block text-[0.94rem] font-normal leading-none tracking-[-0.01em] text-audit-ink sm:text-[1rem]">
+            <span className="mt-0.5 block text-[0.9rem] font-normal leading-none tracking-[-0.01em] text-audit-ink sm:text-[0.96rem]">
               arnaudcrestey.com
             </span>
 
             <span className="mt-3 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
           </a>
 
-          <div className="inline-flex items-center rounded-full border border-audit-border-subtle bg-white/85 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-audit-subtle shadow-[0_10px_28px_rgba(31,39,64,0.05)] backdrop-blur-sm sm:text-[12px]">
+          <div className="inline-flex items-center rounded-full border border-audit-border-subtle bg-white/88 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-audit-subtle shadow-[0_8px_24px_rgba(31,39,64,0.04)] backdrop-blur-sm sm:text-[12px]">
             Diagnostic premium
           </div>
         </header>
 
-        <section className="grid gap-10 lg:grid-cols-[minmax(0,1.08fr)_420px] lg:items-start lg:gap-12">
-          <div className="pt-1 lg:pt-5">
-            <div className="mb-6 text-[0.8rem] font-semibold uppercase tracking-[0.26em] text-[#3154b8]">
+        <section className="grid gap-10 lg:grid-cols-[minmax(0,1.02fr)_430px] lg:items-start lg:gap-14">
+          <div className="pt-1 lg:pt-4">
+            <div className="mb-6 text-[0.78rem] font-semibold uppercase tracking-[0.28em] text-[#3154b8]">
               Audit stratégique
             </div>
 
-            <h1 className="max-w-[700px] font-serif text-[2.85rem] leading-[0.94] tracking-[-0.045em] text-audit-ink sm:text-[3.7rem] md:text-[4.4rem] lg:text-[4.9rem]">
+            <h1 className="max-w-[660px] font-serif text-[2.7rem] leading-[0.93] tracking-[-0.05em] text-audit-ink sm:text-[3.45rem] md:text-[4.05rem] lg:text-[4.55rem]">
               Ce que votre activité montre…
               <br />
               et ce que vos clients
@@ -49,29 +49,29 @@ export default function AuditSilencieuxPage() {
               comprennent réellement
             </h1>
 
-            <p className="mt-7 max-w-[690px] text-[1.04rem] leading-[1.95] text-audit-subtle sm:text-[1.1rem]">
+            <p className="mt-7 max-w-[640px] text-[1rem] leading-[1.95] text-audit-subtle sm:text-[1.08rem]">
               Collez simplement votre site, une page ou votre présentation.
               Nous analysons ce que vous exprimez réellement — au-delà de ce que
               vous pensez dire.
             </p>
           </div>
 
-          <aside className="rounded-[32px] border border-audit-border-subtle bg-white/90 p-8 shadow-[0_18px_60px_rgba(31,39,64,0.06)] backdrop-blur-sm">
-            <div className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-audit-subtle">
+          <aside className="rounded-[32px] border border-audit-border-subtle bg-white/92 p-8 shadow-[0_16px_48px_rgba(31,39,64,0.05)] backdrop-blur-sm">
+            <div className="text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-audit-subtle">
               À qui s’adresse cet audit
             </div>
 
-            <p className="mt-5 text-[1.02rem] leading-[2] text-audit-ink">
+            <p className="mt-5 text-[0.98rem] leading-[2] text-audit-ink">
               Aux professionnels de l’accompagnement, du conseil et aux activités
               de service qui veulent mieux comprendre ce que leur présence en ligne
               donne à percevoir dès les premières secondes.
             </p>
 
-            <div className="mt-9 text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-audit-subtle">
+            <div className="mt-9 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-audit-subtle">
               Ce que vous allez identifier
             </div>
 
-            <ul className="mt-5 space-y-4 text-[1rem] leading-[1.85] text-audit-ink">
+            <ul className="mt-5 space-y-4 text-[0.98rem] leading-[1.85] text-audit-ink">
               <li className="flex gap-3">
                 <span className="mt-[11px] h-2 w-2 shrink-0 rounded-full bg-[#3154b8]" />
                 <span>Le message principal réellement perçu</span>
@@ -90,13 +90,13 @@ export default function AuditSilencieuxPage() {
           </aside>
         </section>
 
-        <section className="rounded-[36px] border border-audit-border-subtle bg-white/84 p-5 shadow-[0_24px_80px_rgba(31,39,64,0.07)] sm:p-6 lg:p-7">
-          <div className="rounded-[30px] border border-audit-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(248,250,255,0.88)_100%)] p-4 sm:p-5 lg:p-6">
+        <section className="rounded-[34px] border border-audit-border-subtle bg-white/82 p-4 shadow-[0_20px_64px_rgba(31,39,64,0.055)] sm:p-5 lg:p-6">
+          <div className="rounded-[28px] border border-audit-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(248,250,255,0.90)_100%)] p-4 sm:p-5 lg:p-5">
             <AuditInputCard />
           </div>
         </section>
 
-        <div className="pt-1">
+        <div className="pt-0.5">
           <TrustMicrocopy />
         </div>
 
@@ -104,7 +104,7 @@ export default function AuditSilencieuxPage() {
           {benefits.map((benefit) => (
             <article
               key={benefit}
-              className="rounded-[24px] border border-audit-border-subtle bg-white/92 px-6 py-5 text-[15px] leading-7 text-audit-subtle shadow-[0_14px_34px_rgba(31,39,64,0.045)]"
+              className="rounded-[22px] border border-audit-border-subtle bg-white/94 px-5 py-5 text-[14px] leading-7 text-audit-subtle shadow-[0_12px_28px_rgba(31,39,64,0.04)]"
             >
               {benefit}
             </article>

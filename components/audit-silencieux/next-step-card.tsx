@@ -14,6 +14,7 @@ function cleanMainGap(text: string) {
     .replace(/^je comprends que\s*/i, "")
     .replace(/^le visiteur\s*/i, "")
     .replace(/^on\s*/i, "")
+    .replace(/^bloque\s*/i, "")
     .trim();
 }
 
@@ -26,8 +27,7 @@ function getButtonLabel(mainGap?: string, buttonLabel?: string) {
     normalizedGap.includes("ne sait pas") ||
     normalizedGap.includes("ne comprend pas") ||
     normalizedGap.includes("ce qui est réellement vendu") ||
-    normalizedGap.includes("ce qui est proposé") ||
-    normalizedGap.includes("ce que je peux obtenir")
+    normalizedGap.includes("ce qui est proposé")
   ) {
     return "Clarifier votre offre";
   }
@@ -54,19 +54,17 @@ export function NextStepCard({
 
   const cleanedGap = mainGap ? cleanMainGap(mainGap) : "";
 
+  const intro = cleanedGap
+    ? `Un point ressort clairement : ${cleanedGap}`
+    : `Votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.`;
+
   const finalText =
     text ??
-    (cleanedGap
-      ? `Ce diagnostic met en évidence un point précis : ${cleanedGap}
+    `${intro}
 
 Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qualité, mais d’un manque de structure dans la manière dont l’offre est présentée.
 
-La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`
-      : `Ce diagnostic met en évidence un point précis : votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.
-
-Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qualité, mais d’un manque de structure dans la manière dont l’offre est présentée.
-
-La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`);
+La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`;
 
   const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
 

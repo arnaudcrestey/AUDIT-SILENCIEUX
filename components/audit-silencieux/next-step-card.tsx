@@ -168,8 +168,8 @@ function buildParagraphs(
     p4 = reco.charAt(0).toUpperCase() + reco.slice(1) + ".";
   }
 
-  const p5 =
-    "Quand la lecture est immédiate, la confiance monte. Quand elle demande un effort, l’intérêt retombe.";
+   const p5 =
+    "Quand la lecture est immédiate, la confiance monte. Sinon, l’intérêt retombe.";
 
   return [p1, p2, p3, p4, p5];
 }

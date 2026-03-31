@@ -12,7 +12,7 @@ type NextStepCardProps = {
 export function NextStepCard({
   title = "Aller plus loin",
   text,
-  buttonLabel = "Comprendre ce qui bloque vraiment",
+  buttonLabel,
   mainGap
 }: NextStepCardProps) {
   const router = useRouter();
@@ -31,6 +31,22 @@ Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qu
 
 La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`);
 
+  const normalizedGap = (mainGap ?? "").toLowerCase();
+
+  const computedButtonLabel =
+    buttonLabel ??
+    (normalizedGap.includes("ne sait pas") ||
+    normalizedGap.includes("ne comprend pas") ||
+    normalizedGap.includes("ce qui est réellement vendu") ||
+    normalizedGap.includes("ce qui est proposé")
+      ? "Clarifier votre offre"
+      : normalizedGap.includes("trop large") ||
+          normalizedGap.includes("abstrait") ||
+          normalizedGap.includes("trop générique") ||
+          normalizedGap.includes("manque de précision")
+        ? "Structurer votre message"
+        : "Optimiser votre point d’entrée");
+
   const paragraphs = finalText
     .split("\n\n")
     .map((item) => item.trim())
@@ -44,8 +60,8 @@ La suite consiste à identifier concrètement ce que vous devez formuler en prio
         </h3>
 
         <div className="mt-3 space-y-4 text-[17px] leading-relaxed text-audit-subtle">
-          {paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
+          {paragraphs.map((paragraph, index) => (
+            <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
           ))}
         </div>
 
@@ -54,7 +70,7 @@ La suite consiste à identifier concrètement ce que vous devez formuler en prio
           onClick={() => router.push("/audit-silencieux/aller-plus-loin")}
           className="mt-6 inline-flex items-center justify-center rounded-xl bg-audit-blue px-6 py-3 text-[16px] font-medium text-white transition hover:bg-audit-blue-hover"
         >
-          {buttonLabel}
+          {computedButtonLabel}
         </button>
       </div>
     </section>

@@ -49,10 +49,12 @@ export default function AuditSilencieuxPage() {
               comprennent réellement
             </h1>
 
-            <p className="mt-7 max-w-[640px] text-[1rem] leading-[1.95] text-audit-subtle sm:text-[1.08rem]">
-              Collez simplement votre site, une page ou votre présentation.
-              Nous analysons ce que vous exprimez réellement — au-delà de ce que
-              vous pensez dire.
+            <p className="mt-7 max-w-[650px] text-[1rem] leading-[1.9] text-audit-subtle sm:text-[1.08rem]">
+              Collez l’URL de votre site, le texte d’une page
+              <br />
+              ou une présentation écrite de votre activité.
+              <br />
+              Nous analysons ce que vos visiteurs comprennent réellement en vous découvrant.
             </p>
           </div>
 
@@ -91,8 +93,8 @@ export default function AuditSilencieuxPage() {
         </section>
 
         <section className="mt-6">
-  <AuditInputCard />
-</section>
+          <AuditInputCard />
+        </section>
 
         <div className="pt-0.5">
           <TrustMicrocopy />

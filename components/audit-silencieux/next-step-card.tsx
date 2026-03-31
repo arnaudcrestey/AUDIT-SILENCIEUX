@@ -9,6 +9,41 @@ type NextStepCardProps = {
   mainGap?: string;
 };
 
+function cleanMainGap(text: string) {
+  return text
+    .replace(/^je comprends que\s*/i, "")
+    .replace(/^le visiteur\s*/i, "")
+    .replace(/^on\s*/i, "")
+    .trim();
+}
+
+function getButtonLabel(mainGap?: string, buttonLabel?: string) {
+  if (buttonLabel) return buttonLabel;
+
+  const normalizedGap = (mainGap ?? "").toLowerCase();
+
+  if (
+    normalizedGap.includes("ne sait pas") ||
+    normalizedGap.includes("ne comprend pas") ||
+    normalizedGap.includes("ce qui est réellement vendu") ||
+    normalizedGap.includes("ce qui est proposé") ||
+    normalizedGap.includes("ce que je peux obtenir")
+  ) {
+    return "Clarifier votre offre";
+  }
+
+  if (
+    normalizedGap.includes("trop large") ||
+    normalizedGap.includes("abstrait") ||
+    normalizedGap.includes("trop générique") ||
+    normalizedGap.includes("manque de précision")
+  ) {
+    return "Structurer votre message";
+  }
+
+  return "Optimiser votre point d’entrée";
+}
+
 export function NextStepCard({
   title = "Aller plus loin",
   text,
@@ -17,10 +52,12 @@ export function NextStepCard({
 }: NextStepCardProps) {
   const router = useRouter();
 
+  const cleanedGap = mainGap ? cleanMainGap(mainGap) : "";
+
   const finalText =
     text ??
-    (mainGap
-      ? `Ce diagnostic met en évidence un point précis : ${mainGap}
+    (cleanedGap
+      ? `Ce diagnostic met en évidence un point précis : ${cleanedGap}
 
 Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qualité, mais d’un manque de structure dans la manière dont l’offre est présentée.
 
@@ -31,21 +68,7 @@ Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qu
 
 La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`);
 
-  const normalizedGap = (mainGap ?? "").toLowerCase();
-
-  const computedButtonLabel =
-    buttonLabel ??
-    (normalizedGap.includes("ne sait pas") ||
-    normalizedGap.includes("ne comprend pas") ||
-    normalizedGap.includes("ce qui est réellement vendu") ||
-    normalizedGap.includes("ce qui est proposé")
-      ? "Clarifier votre offre"
-      : normalizedGap.includes("trop large") ||
-          normalizedGap.includes("abstrait") ||
-          normalizedGap.includes("trop générique") ||
-          normalizedGap.includes("manque de précision")
-        ? "Structurer votre message"
-        : "Optimiser votre point d’entrée");
+  const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
 
   const paragraphs = finalText
     .split("\n\n")

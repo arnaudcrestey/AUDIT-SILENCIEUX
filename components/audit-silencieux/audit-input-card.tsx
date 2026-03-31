@@ -66,7 +66,7 @@ export function AuditInputCard() {
           value={content}
           onChange={(event) => setContent(event.target.value)}
           rows={6}
-          placeholder="Collez ici votre site, une page ou une présentation…"
+          placeholder="Collez ici l’URL de votre site, le texte d’une page, ou une présentation écrite de votre activité…"
           className="w-full min-h-[140px] resize-y rounded-[16px] border border-[#d9e0ec] bg-[#f2f5fa] px-4 py-4 text-[15px] leading-6 text-audit-text placeholder:text-audit-muted outline-none transition focus:border-audit-blue focus:bg-white focus:ring-4 focus:ring-audit-halo sm:min-h-[160px] sm:px-5 sm:leading-7"
         />
 
@@ -75,7 +75,7 @@ export function AuditInputCard() {
             {error ? (
               <span className="text-red-700">{error}</span>
             ) : (
-              "Lecture immédiate — sans inscription"
+              "Exemples : URL, texte de page, présentation d’offre. Les images seules ne sont pas analysées."
             )}
           </div>
 

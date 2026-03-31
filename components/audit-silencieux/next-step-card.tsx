@@ -94,19 +94,6 @@ function getButtonLabel(mainGap?: string, buttonLabel?: string) {
 function getRedirectPath() {
   return "/audit-silencieux/aller-plus-loin";
 }
-  if (
-    gap.includes("trop large") ||
-    gap.includes("abstrait") ||
-    gap.includes("générique") ||
-    gap.includes("flou") ||
-    gap.includes("manque de précision") ||
-    gap.includes("reste flou")
-  ) {
-    return "/audit-silencieux/structuration";
-  }
-
-  return "/audit-silencieux/optimisation";
-}
 
 function buildParagraphs(
   mainGap?: string,
@@ -153,7 +140,7 @@ function buildParagraphs(
     p4 = reco.charAt(0).toUpperCase() + reco.slice(1) + ".";
   }
 
-   const p5 =
+  const p5 =
     "Quand la lecture est immédiate, la confiance monte. Sinon, l’intérêt retombe.";
 
   return [p1, p2, p3, p4, p5];
@@ -175,7 +162,7 @@ export function NextStepCard({
   );
 
   const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
-  const redirectPath = getRedirectPath(mainGap);
+  const redirectPath = getRedirectPath();
 
   return (
     <section className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">

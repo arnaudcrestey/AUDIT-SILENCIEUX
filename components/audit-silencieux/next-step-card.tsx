@@ -11,12 +11,27 @@ type NextStepCardProps = {
 
 export function NextStepCard({
   title = "Aller plus loin",
-  text = "Ce diagnostic met en évidence un point précis : votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.\n\nDans la majorité des cas, ce type de décalage ne vient pas d’un manque de qualité, mais d’un manque de structure dans la manière dont l’offre est présentée.\n\nLa suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.",
-  buttonLabel = "Comprendre ce qui bloque vraiment"
+  text,
+  buttonLabel = "Comprendre ce qui bloque vraiment",
+  mainGap
 }: NextStepCardProps) {
   const router = useRouter();
 
-  const paragraphs = text
+  const finalText =
+    text ??
+    (mainGap
+      ? `Ce diagnostic met en évidence un point précis : ${mainGap}
+
+Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qualité, mais d’un manque de structure dans la manière dont l’offre est présentée.
+
+La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`
+      : `Ce diagnostic met en évidence un point précis : votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.
+
+Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qualité, mais d’un manque de structure dans la manière dont l’offre est présentée.
+
+La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`);
+
+  const paragraphs = finalText
     .split("\n\n")
     .map((item) => item.trim())
     .filter(Boolean);

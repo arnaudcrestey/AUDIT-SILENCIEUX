@@ -14,18 +14,50 @@ function isUrl(value: string) {
   }
 }
 
-function cleanExtractedText(html: string) {
-  const text = html
+function stripTags(value: string) {
+  return value
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, " ")
     .replace(/<noscript[^>]*>[\s\S]*?<\/noscript>/gi, " ")
     .replace(/<svg[^>]*>[\s\S]*?<\/svg>/gi, " ")
-    .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, " ")
-    .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, " ")
-    .replace(/<header[^>]*>[\s\S]*?<\/header>/gi, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function extractMetaContent(html: string, name: string) {
+  const regex = new RegExp(
+    `<meta[^>]+(?:name|property)=["']${name}["'][^>]+content=["']([^"']+)["'][^>]*>`,
+    "i"
+  );
+  return html.match(regex)?.[1]?.trim() ?? "";
+}
+
+function extractTagContents(html: string, tagName: string, limit = 5) {
+  const regex = new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, "gi");
+  const results: string[] = [];
+  let match: RegExpExecArray | null = null;
+
+  while ((match = regex.exec(html)) !== null && results.length < limit) {
+    const text = stripTags(match[1]);
+    if (text && text.length > 2) {
+      results.push(text);
+    }
+  }
+
+  return results;
+}
+
+function extractMainText(html: string) {
+  const cleaned = html
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<noscript[^>]*>[\s\S]*?<\/noscript>/gi, " ")
+    .replace(/<svg[^>]*>[\s\S]*?<\/svg>/gi, " ")
+    .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, " ")
+    .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, " ");
+
+  const text = stripTags(cleaned);
 
   const bannedPatterns = [
     /mentions légales/gi,
@@ -37,20 +69,46 @@ function cleanExtractedText(html: string) {
     /tous droits réservés/gi
   ];
 
-  let cleaned = text;
+  let normalized = text;
 
   for (const pattern of bannedPatterns) {
-    cleaned = cleaned.replace(pattern, " ");
+    normalized = normalized.replace(pattern, " ");
   }
 
-  const sentences = cleaned
-    .split(/(?<=[.!?])\s+/)
-    .map((sentence) => sentence.trim())
-    .filter((sentence) => sentence.length > 45)
-    .filter((sentence) => !/javascript|css|http|www\./i.test(sentence))
-    .slice(0, 18);
+  return normalized.replace(/\s+/g, " ").trim().slice(0, 4000);
+}
 
-  return sentences.join(" ").slice(0, 3500);
+function buildStructuredWebsiteContent(html: string, url: string) {
+  const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]
+    ? stripTags(html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || "")
+    : "";
+
+  const metaDescription =
+    extractMetaContent(html, "description") ||
+    extractMetaContent(html, "og:description");
+
+  const h1 = extractTagContents(html, "h1", 3);
+  const h2 = extractTagContents(html, "h2", 6);
+  const buttons = [
+    ...extractTagContents(html, "button", 6),
+    ...extractTagContents(html, "a", 10)
+  ]
+    .filter((item) => item.length > 1 && item.length < 80)
+    .slice(0, 8);
+
+  const bodyText = extractMainText(html);
+
+  const sections = [
+    `URL : ${url}`,
+    title ? `TITLE : ${title}` : "",
+    metaDescription ? `META DESCRIPTION : ${metaDescription}` : "",
+    h1.length ? `H1 : ${h1.join(" | ")}` : "",
+    h2.length ? `H2 : ${h2.join(" | ")}` : "",
+    buttons.length ? `CTA / LIENS VISIBLES : ${buttons.join(" | ")}` : "",
+    bodyText ? `TEXTE PRINCIPAL : ${bodyText}` : ""
+  ].filter(Boolean);
+
+  return sections.join("\n\n");
 }
 
 async function extractWebsiteContent(url: string) {
@@ -67,13 +125,13 @@ async function extractWebsiteContent(url: string) {
   }
 
   const html = await response.text();
-  const cleaned = cleanExtractedText(html);
+  const structured = buildStructuredWebsiteContent(html, url);
 
-  if (!cleaned || cleaned.length < 120) {
+  if (!structured || structured.length < 180) {
     throw new Error("Contenu exploitable insuffisant.");
   }
 
-  return cleaned;
+  return structured;
 }
 
 async function normalizeContent(content: string, sourceType?: string) {
@@ -92,29 +150,19 @@ async function normalizeContent(content: string, sourceType?: string) {
     };
   }
 
-  try {
-    const websiteContent = await extractWebsiteContent(trimmedContent);
+  const websiteContent = await extractWebsiteContent(trimmedContent);
 
-    return {
-      normalizedContent: websiteContent,
-      normalizedSourceType: "site"
-    };
-  } catch (error) {
-    console.error("URL extraction error:", error);
-
-    return {
-      normalizedContent: `Site fourni : ${trimmedContent}`,
-      normalizedSourceType: "site"
-    };
-  }
+  return {
+    normalizedContent: websiteContent,
+    normalizedSourceType: "site"
+  };
 }
 
 async function runModelAnalysis(content: string, sourceType = "mixed") {
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    console.error("OPENAI_API_KEY manquante");
-    return null;
+    throw new Error("OPENAI_API_KEY manquante");
   }
 
   const response = await fetch("https://api.openai.com/v1/responses", {
@@ -124,7 +172,7 @@ async function runModelAnalysis(content: string, sourceType = "mixed") {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: "gpt-4.1-mini",
+      model: process.env.OPENAI_MODEL || "gpt-4.1-mini",
       input: [
         {
           role: "system",
@@ -142,19 +190,19 @@ async function runModelAnalysis(content: string, sourceType = "mixed") {
 
   if (!response.ok) {
     console.error("OpenAI error:", data);
-    return null;
+    throw new Error("Erreur OpenAI pendant l’analyse.");
   }
 
-  try {
-    const text =
-      data.output?.[0]?.content?.[0]?.text ||
-      data.output_text ||
-      "";
+  const text =
+    data.output_text ||
+    data.output?.[0]?.content?.[0]?.text ||
+    "";
 
-    return typeof text === "string" && text.trim() ? text.trim() : null;
-  } catch {
-    return null;
+  if (typeof text !== "string" || !text.trim()) {
+    throw new Error("Réponse vide renvoyée par OpenAI.");
   }
+
+  return text.trim();
 }
 
 export async function POST(request: Request) {
@@ -173,7 +221,7 @@ export async function POST(request: Request) {
       sourceType
     );
 
-    let finalResult: AuditAnalysisResult = buildFallbackAudit(normalizedContent);
+    let finalResult: AuditAnalysisResult | null = null;
 
     try {
       const modelOutput = await runModelAnalysis(
@@ -181,15 +229,13 @@ export async function POST(request: Request) {
         normalizedSourceType
       );
 
-      if (modelOutput) {
-        const parsed = parseAuditResult(modelOutput);
-
-        if (parsed) {
-          finalResult = parsed;
-        }
-      }
+      finalResult = parseAuditResult(modelOutput);
     } catch (error) {
       console.error("Model analysis error:", error);
+    }
+
+    if (!finalResult) {
+      finalResult = buildFallbackAudit(normalizedContent);
     }
 
     if (sessionId) {
@@ -202,7 +248,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        error: "Une erreur serveur est survenue pendant l’analyse."
+        error:
+          error instanceof Error
+            ? error.message
+            : "Une erreur serveur est survenue pendant l’analyse."
       },
       { status: 500 }
     );

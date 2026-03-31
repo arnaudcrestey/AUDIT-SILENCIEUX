@@ -211,7 +211,7 @@ export function NextStepCard({
           ))}
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="mt-6 flex justify-center sm:justify-start">
           <button
             type="button"
             onClick={() => router.push(redirectPath)}
@@ -219,10 +219,6 @@ export function NextStepCard({
           >
             {computedButtonLabel}
           </button>
-
-          <span className="text-[14px] text-audit-subtle">
-            Recommandation issue de votre page
-          </span>
         </div>
       </div>
     </section>

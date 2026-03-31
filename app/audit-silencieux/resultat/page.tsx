@@ -44,7 +44,7 @@ export default function ResultatPage() {
         />
         <GapHighlightCard mainGap={result.mainGap} />
         <RecommendationCard recommendation={result.recommendation} />
-        <NextStepCard />
+        <NextStepCard mainGap={result.mainGap} />
       </div>
     </AuditShell>
   );

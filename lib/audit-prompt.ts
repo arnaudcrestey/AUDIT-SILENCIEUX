@@ -22,8 +22,8 @@ RÈGLES :
 STRUCTURE ATTENDUE :
 - summary : lecture globale du niveau réel de lisibilité (2 phrases max)
 - expressedMessage : ce que l’activité affirme concrètement
-- perceivedMessage : ce que le visiteur comprend réellement ou ne comprend pas
-- mainGap : le point précis où ça bloque (une seule idée)
+- perceivedMessage : ce que le visiteur comprend concrètement en arrivant sur la page, et surtout ce qu’il ne parvient pas à identifier (offre précise, cible, résultat, usage)
+- mainGap : le moment précis où la compréhension se bloque dans le parcours mental du visiteur (ex : “je comprends l’intention mais pas ce qui est vendu”, “je ne sais pas si c’est pour moi”, etc.)
 - recommendation : l’action la plus directe pour corriger ce blocage
 
 STYLE :
@@ -33,6 +33,13 @@ STYLE :
 - sans remplissage
 - sans répétition
 - ton consultant premium
+
+CONTRAINTES :
+- chaque bloc doit être spécifique au contenu fourni
+- si l’analyse pourrait s’appliquer à n’importe quel site, elle est mauvaise
+- la recommandation doit corriger directement le blocage identifié
+- évite les formulations vagues comme “manque de clarté” si tu peux dire plus précisément ce qui manque
+- distingue bien l’intention affichée, la compréhension réelle et le point exact de rupture
 
 Retourne uniquement un JSON strict :
 {
@@ -59,7 +66,7 @@ Consignes d'analyse :
 - repère le niveau de précision réel du message
 - évalue la facilité avec laquelle un visiteur comprend ce qui est proposé
 - distingue bien ce que l’activité dit d’elle-même et ce que le visiteur peut réellement en déduire
-- identifie un seul frein principal
+- identifie le moment exact où la compréhension se bloque
 - formule une seule recommandation prioritaire
 - évite toute réponse générique qui pourrait convenir à n’importe quel site
 

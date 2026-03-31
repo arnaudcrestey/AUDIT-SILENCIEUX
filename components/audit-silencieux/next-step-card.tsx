@@ -6,6 +6,7 @@ type NextStepCardProps = {
   title?: string;
   text?: string;
   buttonLabel?: string;
+  mainGap?: string;
 };
 
 export function NextStepCard({

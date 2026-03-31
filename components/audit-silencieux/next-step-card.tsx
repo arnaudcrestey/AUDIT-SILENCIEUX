@@ -9,15 +9,6 @@ type NextStepCardProps = {
   mainGap?: string;
 };
 
-function cleanMainGap(text: string) {
-  return text
-    .replace(/^je comprends que\s*/i, "")
-    .replace(/^le visiteur\s*/i, "")
-    .replace(/^on\s*/i, "")
-    .replace(/^bloque\s*(à|au|sur)?\s*/i, "")
-    .trim();
-}
-
 function getButtonLabel(mainGap?: string, buttonLabel?: string) {
   if (buttonLabel) return buttonLabel;
 
@@ -84,19 +75,13 @@ export function NextStepCard({
 }: NextStepCardProps) {
   const router = useRouter();
 
-  const cleanedGap = mainGap ? cleanMainGap(mainGap) : "";
-
-  const intro = cleanedGap
-    ? `${cleanedGap.charAt(0).toUpperCase() + cleanedGap.slice(1)}`
-    : "Votre message ne permet pas encore à un visiteur de comprendre clairement ce que vous proposez et pour qui.";
-
   const finalText =
     text ??
-    `${intro}
+    `Ce premier diagnostic révèle un point de friction dans la manière dont votre offre est perçue.
 
-Dans la majorité des cas, ce type de décalage ne vient pas d’un manque de qualité, mais d’un manque de structure dans la manière dont l’offre est présentée.
+La suite consiste à transformer ce constat en structure claire : préciser ce que vous proposez, pour qui, avec quel bénéfice concret, et comment le rendre immédiatement compréhensible sur votre page.
 
-La suite consiste à identifier concrètement ce que vous devez formuler en priorité, comment rendre votre offre immédiatement compréhensible, et comment transformer cette clarté en prise de contact réelle.`;
+L’objectif n’est pas d’ajouter plus de contenu, mais de rendre votre message plus lisible, plus direct et plus engageant.`;
 
   const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
   const redirectPath = getRedirectPath(mainGap);

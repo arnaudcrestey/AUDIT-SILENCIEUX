@@ -78,6 +78,7 @@ export default function ResultatPage() {
 
         <NextStepCard
           mainGap={result.mainGap}
+          recommendation={result.recommendation}
           subjectName={subjectName}
         />
       </div>

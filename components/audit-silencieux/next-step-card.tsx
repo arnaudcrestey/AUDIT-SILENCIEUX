@@ -135,45 +135,43 @@ function buildParagraphs(
   const profile = getProfile(gap, perceived);
 
   let p1 =
-    "Votre page transmet une intention sérieuse, mais elle ne permet pas encore de comprendre immédiatement ce que vous proposez.";
+    "Dans l’état actuel, la page transmet une intention sérieuse, mais elle ne permet pas encore d’identifier clairement la nature exacte de l’offre.";
 
-  if (profile === "clarity") {
-    p1 =
-      "Votre page donne une impression de qualité, mais l’offre n’est pas immédiatement identifiable.";
-  }
-
-  if (profile === "structure") {
-    p1 =
-      "Votre page est cohérente dans le fond, mais le message reste trop large pour être compris rapidement.";
+  if (perceived) {
+    p1 = `Aujourd’hui, la lecture qui domine est la suivante : ${lowerFirst(perceived)}.`;
   }
 
   let p2 =
-    "Un visiteur comprend l’intention générale, mais ne sait pas clairement ce qu’il peut obtenir ni à quelle situation votre proposition répond.";
+    "Ce qui freine n’est pas forcément la qualité perçue, mais le fait que le visiteur doive encore interpréter ce qu’il a sous les yeux.";
 
   if (gap) {
-    p2 = `Le blocage se situe ici : ${lowerFirst(gap)}.`;
-  } else if (perceived) {
-    p2 = `Côté visiteur, cela se traduit ainsi : ${lowerFirst(perceived)}.`;
+    p2 = `Le décalage principal se situe ici : ${lowerFirst(gap)}.`;
   }
 
   let p3 =
-    "L’ajustement prioritaire est de rendre votre offre explicite dès les premiers éléments visibles de la page.";
-
-  if (reco) {
-    p3 = reco.charAt(0).toUpperCase() + reco.slice(1) + ".";
-  }
-
-  let p4 = "Si le visiteur doit réfléchir, il ne s’engage pas.";
+    "Autrement dit, la page suggère une valeur réelle, mais elle ne donne pas encore assez vite un point d’entrée concret, compréhensible et immédiatement projetable.";
 
   if (profile === "structure") {
-    p4 = "Plus le message est net, plus la projection devient facile.";
+    p3 =
+      "Autrement dit, le fond paraît sérieux, mais la formulation reste encore trop large pour qu’un visiteur comprenne rapidement à quoi correspond l’offre.";
   }
 
   if (profile === "conversion") {
-    p4 = "Ce n’est pas le fond qui freine ici, mais la fluidité de lecture.";
+    p3 =
+      "Autrement dit, ce n’est pas l’intention qui pose problème ici, mais la fluidité avec laquelle le visiteur comprend ce qu’il peut faire, obtenir ou attendre.";
   }
 
-  return [p1, p2, p3, p4];
+  let p4 =
+    "L’ajustement le plus utile consiste à rendre l’offre plus explicite dès les premiers éléments visibles : ce que vous faites, pour qui, et avec quel bénéfice concret.";
+
+  if (reco) {
+    p4 = reco.charAt(0).toUpperCase() + reco.slice(1) + ".";
+  }
+
+  const p5 =
+    "Quand la lecture est immédiate, la confiance monte. Quand elle demande un effort, l’intérêt retombe.";
+
+  return [p1, p2, p3, p4, p5];
 }
 
 export function NextStepCard({

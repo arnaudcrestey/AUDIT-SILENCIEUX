@@ -40,16 +40,16 @@ export async function POST(request: Request) {
       );
     }
 
-   let text = "PAS DE RÉPONSE IA";
+    let text = "PAS DE RÉPONSE IA";
 
-try {
-  text =
-    data.output?.[0]?.content?.[0]?.text ||
-    data.output_text ||
-    JSON.stringify(data).slice(0, 200);
-} catch {
-  text = "ERREUR LECTURE IA";
-}
+    try {
+      text =
+        data.output?.[0]?.content?.[0]?.text ||
+        data.output_text ||
+        JSON.stringify(data).slice(0, 200);
+    } catch {
+      text = "ERREUR LECTURE IA";
+    }
 
     return NextResponse.json({
       summary: `[TEST IA] ${text}`,

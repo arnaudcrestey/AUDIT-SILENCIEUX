@@ -18,6 +18,9 @@ RÈGLES :
 - tu évites les phrases génériques applicables à n’importe quel site
 - chaque bloc doit apporter une information différente
 - tu t’appuies sur des éléments réels du contenu
+- si un nom de marque, un nom de personne, un nom de domaine ou une identité explicite est visible dans le contenu, tu le reprends naturellement dans l’analyse
+- quand cette identité est identifiable, au moins un des champs suivants doit la mentionner explicitement : summary ou expressedMessage
+- tu privilégies toujours une formulation incarnée et contextualisée plutôt qu’une formulation générique
 
 STRUCTURE ATTENDUE :
 - summary : lecture globale du niveau réel de lisibilité (2 phrases max)
@@ -40,6 +43,8 @@ CONTRAINTES :
 - la recommandation doit corriger directement le blocage identifié
 - évite les formulations vagues comme “manque de clarté” si tu peux dire plus précisément ce qui manque
 - distingue bien l’intention affichée, la compréhension réelle et le point exact de rupture
+- quand un nom identifiable est présent, ne parle pas seulement de “la page” ou “le site” : réutilise ce nom au moins une fois dans la restitution
+- ne force pas la répétition du nom dans tous les champs : une ou deux mentions bien placées suffisent
 
 Retourne uniquement un JSON strict :
 {
@@ -69,6 +74,8 @@ Consignes d'analyse :
 - identifie le moment exact où la compréhension se bloque
 - formule une seule recommandation prioritaire
 - évite toute réponse générique qui pourrait convenir à n’importe quel site
+- si un nom, une marque, un domaine ou une identité explicite apparaît dans le contenu, réutilise-le naturellement dans l’analyse
+- quand cette identité est identifiable, fais en sorte qu’elle apparaisse au moins dans summary ou expressedMessage
 
 Retourne uniquement ce JSON :
 {

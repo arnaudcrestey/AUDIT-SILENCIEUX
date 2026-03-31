@@ -1,184 +1,99 @@
 import Link from "next/link";
 import { AuditShell } from "@/components/audit-silencieux/audit-shell";
 
-const forWho = [
-  "Votre activité est sérieuse, mais votre offre reste difficile à identifier immédiatement.",
-  "Votre message donne une impression de qualité, sans permettre au visiteur de se projeter clairement.",
-  "Vous sentez un écart entre la valeur réelle de votre travail et la façon dont il est perçu en ligne."
-];
-
-const outcomes = [
-  "Une reformulation claire de votre activité, de votre offre et de votre point d’entrée.",
-  "Un message principal plus lisible, plus concret et plus immédiatement compréhensible.",
-  "Des ajustements directement exploitables pour mieux orienter vos visiteurs vers la prise de contact."
-];
-
-const processSteps = [
-  {
-    title: "1. Lecture ciblée",
-    text: "Nous reprenons votre activité, vos pages clés ou vos supports pour identifier précisément ce qui est compris, ce qui reste flou et où la lecture se bloque."
-  },
-  {
-    title: "2. Clarification stratégique",
-    text: "Nous clarifions votre offre, votre cible prioritaire, vos bénéfices visibles et la façon dont votre proposition doit être formulée."
-  },
-  {
-    title: "3. Recommandation exploitable",
-    text: "Vous repartez avec une direction claire, structurée et directement réutilisable pour renforcer votre lisibilité et votre conversion."
-  }
-];
-
-const deliverables = [
-  "Une lecture stratégique de votre message actuel",
-  "Un cadrage plus net de votre offre",
-  "Une clarification de votre cible prioritaire",
-  "Des recommandations concrètes pour vos pages ou supports",
-  "Une base solide pour renforcer votre point d’entrée"
-];
-
 export default function AllerPlusLoinPage() {
   return (
     <AuditShell>
-      <div className="mx-auto max-w-6xl space-y-6 sm:space-y-8">
-        <header className="rounded-[28px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8 lg:p-10">
+      <div className="mx-auto max-w-4xl space-y-6 sm:space-y-8">
+
+        {/* HERO */}
+        <header className="rounded-[28px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
           <div className="inline-flex items-center rounded-full border border-audit-border bg-[#f8f9fc] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-audit-subtle">
             Suite recommandée
           </div>
 
-          <h1 className="mt-4 max-w-4xl text-[2rem] font-semibold leading-[1.02] tracking-[-0.03em] text-audit-text sm:text-[2.6rem] lg:text-[3.4rem]">
-            Transformez cette lecture en clarification complète de votre offre
+          <h1 className="mt-4 text-[2rem] font-semibold leading-tight text-audit-text sm:text-[2.6rem]">
+            Clarifier votre offre pour qu’elle soit immédiatement comprise
           </h1>
 
-          <p className="mt-4 max-w-3xl text-[1rem] leading-8 text-audit-subtle sm:text-[1.06rem]">
-            L’audit silencieux met en lumière un blocage. La clarification complète
-            vous permet d’aller plus loin : rendre votre activité plus lisible,
-            votre offre plus identifiable et votre point d’entrée plus efficace.
+          <p className="mt-4 text-[1rem] leading-7 text-audit-subtle">
+            L’audit a mis en évidence un blocage.  
+            La suite consiste à rendre votre activité lisible, précise et directement compréhensible pour vos futurs clients.
           </p>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6">
             <Link
-              href="mailto:contact@arnaudcrestey.com?subject=Clarification%20compl%C3%A8te%20-%20Audit%20silencieux"
+              href="https://arnaudcrestey.com/contact"
               className="inline-flex items-center justify-center rounded-xl bg-audit-blue px-6 py-3 text-[15px] font-medium text-white transition hover:bg-audit-blue-hover"
             >
-              Demander une clarification complète
-            </Link>
-
-            <Link
-              href="/audit-silencieux"
-              className="inline-flex items-center justify-center rounded-xl border border-audit-border px-6 py-3 text-[15px] font-medium text-audit-text transition hover:bg-white/70"
-            >
-              Revenir à l’audit
+              Parler de votre situation
             </Link>
           </div>
         </header>
 
-        <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-          <article className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
-            <h2 className="text-[1.45rem] font-semibold text-audit-text sm:text-[1.7rem]">
-              Quand cette suite devient pertinente
-            </h2>
-
-            <ul className="mt-5 space-y-4 text-[1rem] leading-8 text-audit-subtle">
-              {forWho.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="mt-[13px] h-2 w-2 shrink-0 rounded-full bg-audit-blue" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-
-          <article className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
-            <h2 className="text-[1.45rem] font-semibold text-audit-text sm:text-[1.7rem]">
-              Ce que cela vous apporte
-            </h2>
-
-            <ul className="mt-5 space-y-4 text-[1rem] leading-8 text-audit-subtle">
-              {outcomes.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="mt-[13px] h-2 w-2 shrink-0 rounded-full bg-audit-blue" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        </section>
-
+        {/* IMPACT */}
         <section className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
-          <h2 className="text-[1.45rem] font-semibold text-audit-text sm:text-[1.7rem]">
-            Comment se déroule la clarification
+          <h2 className="text-[1.4rem] font-semibold text-audit-text">
+            Ce que cela change concrètement
           </h2>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {processSteps.map((step) => (
-              <article
-                key={step.title}
-                className="rounded-[20px] border border-audit-border bg-[#fbfcfe] p-5"
-              >
-                <h3 className="text-[1.05rem] font-semibold text-audit-text">
-                  {step.title}
-                </h3>
-                <p className="mt-3 text-[0.98rem] leading-7 text-audit-subtle">
-                  {step.text}
-                </p>
-              </article>
-            ))}
+          <ul className="mt-5 space-y-4 text-[1rem] leading-7 text-audit-subtle">
+            <li>• Votre offre devient immédiatement compréhensible</li>
+            <li>• Le visiteur comprend en quelques secondes si c’est pour lui</li>
+            <li>• Votre message devient plus crédible et plus engageant</li>
+            <li>• Vous facilitez naturellement le passage à l’action</li>
+          </ul>
+        </section>
+
+        {/* PROCESS */}
+        <section className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
+          <h2 className="text-[1.4rem] font-semibold text-audit-text">
+            Comment on avance
+          </h2>
+
+          <p className="mt-4 text-[1rem] leading-7 text-audit-subtle">
+            Nous reprenons votre activité pour clarifier précisément :
+          </p>
+
+          <ul className="mt-4 space-y-3 text-[1rem] leading-7 text-audit-subtle">
+            <li>• ce que vous proposez réellement</li>
+            <li>• à qui cela s’adresse</li>
+            <li>• ce que le client obtient concrètement</li>
+          </ul>
+
+          <p className="mt-4 text-[1rem] leading-7 text-audit-subtle">
+            L’objectif n’est pas d’ajouter du marketing, mais de rendre votre activité immédiatement lisible.
+          </p>
+        </section>
+
+        {/* CTA FINAL */}
+        <section className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8 text-center">
+          <h2 className="text-[1.5rem] font-semibold text-audit-text">
+            Passer à la prochaine étape
+          </h2>
+
+          <p className="mt-4 text-[1rem] leading-7 text-audit-subtle">
+            Si vous souhaitez transformer cette première lecture en direction claire,
+            nous pouvons en parler rapidement.
+          </p>
+
+          <div className="mt-6">
+            <Link
+              href="https://arnaudcrestey.com/contact"
+              className="inline-flex items-center justify-center rounded-xl bg-audit-blue px-7 py-3 text-[15px] font-medium text-white transition hover:bg-audit-blue-hover"
+            >
+              Ouvrir la discussion
+            </Link>
           </div>
+
+          <Link
+            href="/audit-silencieux"
+            className="mt-4 block text-sm text-audit-subtle underline"
+          >
+            Revenir à l’audit
+          </Link>
         </section>
 
-        <section className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-          <article className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
-            <h2 className="text-[1.45rem] font-semibold text-audit-text sm:text-[1.7rem]">
-              Ce que vous recevez
-            </h2>
-
-            <ul className="mt-5 space-y-4 text-[1rem] leading-8 text-audit-subtle">
-              {deliverables.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="mt-[13px] h-2 w-2 shrink-0 rounded-full bg-audit-blue" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-
-          <article className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">
-            <h2 className="text-[1.45rem] font-semibold text-audit-text sm:text-[1.7rem]">
-              Ouvrir la prochaine étape
-            </h2>
-
-            <p className="mt-4 text-[1rem] leading-8 text-audit-subtle">
-              Cette suite est utile si vous ne cherchez pas seulement un avis,
-              mais une direction claire pour rendre votre activité plus lisible
-              et plus convaincante. L’objectif n’est pas d’ajouter du marketing
-              artificiel, mais de clarifier ce qui doit être compris immédiatement.
-            </p>
-
-            <div className="mt-6 rounded-[18px] border border-audit-border bg-[#fafbfe] p-5">
-              <p className="text-[0.98rem] leading-7 text-audit-subtle">
-                La prise de contact permet de vérifier rapidement si cette
-                clarification est pertinente pour votre activité et sous quelle
-                forme elle peut être menée.
-              </p>
-            </div>
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="mailto:contact@arnaudcrestey.com?subject=Clarification%20compl%C3%A8te%20-%20Audit%20silencieux"
-                className="inline-flex items-center justify-center rounded-xl bg-audit-blue px-6 py-3 text-[15px] font-medium text-white transition hover:bg-audit-blue-hover"
-              >
-                Ouvrir une session de clarification
-              </Link>
-
-              <Link
-                href="/audit-silencieux"
-                className="inline-flex items-center justify-center rounded-xl border border-audit-border px-6 py-3 text-[15px] font-medium text-audit-text transition hover:bg-white/70"
-              >
-                Revenir à l’audit
-              </Link>
-            </div>
-          </article>
-        </section>
       </div>
     </AuditShell>
   );

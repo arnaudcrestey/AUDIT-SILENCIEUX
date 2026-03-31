@@ -53,3 +53,26 @@ Le lecteur doit se dire :
 
 Retourne uniquement un JSON strict :
 summary, expressedMessage, perceivedMessage, mainGap, recommendation.`;
+
+export function buildAuditUserPrompt(content: string, sourceType = "mixed") {
+  return `Source : ${sourceType}
+
+Contenu à analyser :
+"""
+${content}
+"""
+
+Consigne :
+Analyse ce contenu sans extrapoler.
+Ne suppose ni métier, ni offre, ni secteur si ce n’est pas clairement visible.
+Tu dois interpréter l’effet produit sur un visiteur, pas simplement reformuler le texte.
+
+Retourne uniquement ce JSON :
+{
+  "summary": "string",
+  "expressedMessage": "string",
+  "perceivedMessage": "string",
+  "mainGap": "string",
+  "recommendation": "string"
+}`;
+}

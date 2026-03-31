@@ -28,7 +28,7 @@ export function AuditInputCard() {
       const response = await fetch("/api/audit-silencieux/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: content.trim() })
+        body: JSON.stringify({ content: content.trim() }),
       });
 
       if (!response.ok) {
@@ -51,8 +51,8 @@ export function AuditInputCard() {
   }
 
   return (
-    <div className="mx-auto mt-12 w-full max-w-4xl rounded-[28px] border border-audit-border bg-white p-5 shadow-audit-soft sm:p-8 lg:p-10">
-      <form className="space-y-5" onSubmit={handleSubmit}>
+    <div className="mx-auto w-full max-w-[920px] rounded-[24px] border border-audit-border-subtle bg-white/92 px-5 py-5 shadow-[0_14px_40px_rgba(31,39,64,0.05)] sm:px-7 sm:py-6 lg:px-8 lg:py-7">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <label htmlFor="audit-content" className="sr-only">
           Collez ici votre site, une page ou une présentation
         </label>
@@ -61,20 +61,30 @@ export function AuditInputCard() {
           id="audit-content"
           value={content}
           onChange={(event) => setContent(event.target.value)}
-          rows={9}
+          rows={7}
           placeholder="Collez ici votre site, une page ou une présentation…"
-          className="w-full resize-y rounded-2xl border border-audit-border-subtle bg-audit-surface px-5 py-4 text-[16px] leading-relaxed text-audit-text outline-none transition placeholder:text-audit-muted focus:border-audit-blue focus:ring-4 focus:ring-audit-halo"
+          className="min-h-[190px] w-full resize-y rounded-[18px] border border-audit-border-subtle bg-audit-surface px-5 py-4 text-[15px] leading-7 text-audit-text outline-none transition placeholder:text-audit-muted focus:border-audit-blue focus:bg-white focus:ring-4 focus:ring-audit-halo"
         />
 
-        {error ? <p className="text-sm text-red-700">{error}</p> : null}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-h-[20px]">
+            {error ? (
+              <p className="text-sm text-red-700">{error}</p>
+            ) : (
+              <p className="text-[13px] text-audit-muted">
+                Lecture immédiate — sans inscription.
+              </p>
+            )}
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex w-full items-center justify-center rounded-xl bg-audit-blue px-6 py-4 text-[16px] font-medium text-white transition hover:bg-audit-blue-hover disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
-        >
-          {loading ? "Ouverture de la session…" : "Lancer l’audit"}
-        </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="inline-flex items-center justify-center rounded-xl bg-audit-blue px-5 py-3 text-[14px] font-medium text-white shadow-[0_10px_24px_rgba(49,84,199,0.24)] transition hover:-translate-y-[1px] hover:bg-audit-blue-hover disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {loading ? "Ouverture de la session…" : "Lancer l’audit"}
+          </button>
+        </div>
       </form>
     </div>
   );

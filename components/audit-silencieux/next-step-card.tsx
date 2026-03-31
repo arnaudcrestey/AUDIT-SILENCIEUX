@@ -7,6 +7,7 @@ type NextStepCardProps = {
   text?: string;
   buttonLabel?: string;
   mainGap?: string;
+  subjectName?: string;
 };
 
 function getButtonLabel(mainGap?: string, buttonLabel?: string) {
@@ -67,21 +68,32 @@ function getRedirectPath(mainGap?: string) {
   return "/audit-silencieux/optimisation";
 }
 
+function buildIntro(subjectName?: string) {
+  if (subjectName && subjectName.trim()) {
+    return `Pour ${subjectName.trim()}, un point reste à clarifier.`;
+  }
+
+  return "Un point reste à clarifier dans la manière dont votre offre est perçue.";
+}
+
 export function NextStepCard({
   title = "Aller plus loin",
   text,
   buttonLabel,
-  mainGap
+  mainGap,
+  subjectName
 }: NextStepCardProps) {
   const router = useRouter();
 
+  const intro = buildIntro(subjectName);
+
   const finalText =
     text ??
-    `Ce premier diagnostic révèle un point de friction dans la manière dont votre offre est perçue.
+    `${intro}
 
-La suite consiste à transformer ce constat en structure claire : préciser ce que vous proposez, pour qui, avec quel bénéfice concret, et comment le rendre immédiatement compréhensible sur votre page.
+Le diagnostic montre qu’il existe déjà une intention claire, mais que certains repères restent insuffisamment explicites pour permettre une compréhension immédiate de l’offre.
 
-L’objectif n’est pas d’ajouter plus de contenu, mais de rendre votre message plus lisible, plus direct et plus engageant.`;
+La suite consiste à transformer cette première lecture en structure plus nette : préciser ce que vous proposez, pour qui, avec quel bénéfice concret, et comment rendre cela plus engageant sur votre page.`;
 
   const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
   const redirectPath = getRedirectPath(mainGap);

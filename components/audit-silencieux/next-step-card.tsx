@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 
 type NextStepCardProps = {
   title?: string;
-  text?: string;
   buttonLabel?: string;
   mainGap?: string;
+  recommendation?: string;
   subjectName?: string;
 };
 
@@ -70,38 +70,70 @@ function getRedirectPath(mainGap?: string) {
 
 function buildIntro(subjectName?: string) {
   if (subjectName && subjectName.trim()) {
-    return `Pour ${subjectName.trim()}, un point reste à clarifier.`;
+    return `Pour ${subjectName.trim()}, un point mérite d’être clarifié pour rendre l’offre plus immédiatement compréhensible.`;
   }
 
-  return "Un point reste à clarifier dans la manière dont votre offre est perçue.";
+  return "Un point mérite d’être clarifié pour rendre l’offre plus immédiatement compréhensible.";
+}
+
+function buildMiddle(mainGap?: string) {
+  const gap = (mainGap ?? "").toLowerCase();
+
+  if (
+    gap.includes("ne sait pas") ||
+    gap.includes("ne comprend pas") ||
+    gap.includes("ce qui est vendu") ||
+    gap.includes("ce qui est proposé") ||
+    gap.includes("ce que je peux obtenir")
+  ) {
+    return "Le diagnostic montre que le visiteur perçoit une intention sérieuse, mais ne parvient pas encore à identifier clairement ce qu’il peut obtenir, ni pourquoi cette offre lui serait utile.";
+  }
+
+  if (
+    gap.includes("trop large") ||
+    gap.includes("abstrait") ||
+    gap.includes("générique") ||
+    gap.includes("reste flou")
+  ) {
+    return "Le message donne une direction, mais il reste encore trop large pour permettre une projection rapide dans un service, un usage ou un résultat concret.";
+  }
+
+  if (
+    gap.includes("résultats") ||
+    gap.includes("bénéfice") ||
+    gap.includes("projection")
+  ) {
+    return "Le fond paraît sérieux, mais les repères concrets manquent encore pour transformer l’intérêt initial en compréhension utile et en envie d’aller plus loin.";
+  }
+
+  return "Le diagnostic montre qu’il existe déjà une base crédible, mais que certains repères restent trop implicites pour produire une compréhension immédiate et rassurante.";
+}
+
+function buildOutro(recommendation?: string) {
+  if (recommendation && recommendation.trim()) {
+    return `La suite consiste à transformer ce constat en structure plus nette, en travaillant notamment ce point : ${recommendation.trim()}`;
+  }
+
+  return "La suite consiste à transformer ce constat en structure plus nette : préciser ce que vous proposez, pour qui, avec quel bénéfice concret, et comment le rendre plus lisible sur votre page.";
 }
 
 export function NextStepCard({
   title = "Aller plus loin",
-  text,
   buttonLabel,
   mainGap,
+  recommendation,
   subjectName
 }: NextStepCardProps) {
   const router = useRouter();
 
-  const intro = buildIntro(subjectName);
-
-  const finalText =
-    text ??
-    `${intro}
-
-Le diagnostic montre qu’il existe déjà une intention claire, mais que certains repères restent insuffisamment explicites pour permettre une compréhension immédiate de l’offre.
-
-La suite consiste à transformer cette première lecture en structure plus nette : préciser ce que vous proposez, pour qui, avec quel bénéfice concret, et comment rendre cela plus engageant sur votre page.`;
-
   const computedButtonLabel = getButtonLabel(mainGap, buttonLabel);
   const redirectPath = getRedirectPath(mainGap);
 
-  const paragraphs = finalText
-    .split("\n\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
+  const paragraphs = [
+    buildIntro(subjectName),
+    buildMiddle(mainGap),
+    buildOutro(recommendation)
+  ];
 
   return (
     <section className="rounded-[24px] border border-audit-border bg-white p-6 shadow-audit-soft sm:p-8">

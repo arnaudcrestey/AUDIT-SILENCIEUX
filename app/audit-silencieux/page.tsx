@@ -20,23 +20,19 @@ export default function AuditSilencieuxPage() {
       <div className="space-y-8 lg:space-y-9">
         <header className="flex items-start justify-between gap-6">
           <a
-            href="https://systia.fr"
-            target="_blank"
-            rel="noreferrer"
-            className="group inline-flex flex-col items-start"
-          >
-            <div className="text-[0.7rem] font-medium uppercase tracking-[0.42em] text-audit-subtle">
-              Structuration d’activités
-            </div>
+  href="https://systia.fr"
+  target="_blank"
+  rel="noreferrer"
+  className="group inline-flex flex-col items-center"
+>
+  <span
+    className={`${bodoni.className} text-[2.6rem] leading-[0.9] tracking-[-0.07em] text-[#13285c] sm:text-[3.2rem]`}
+  >
+    SYSTIA
+  </span>
 
-            <span
-              className={`${bodoni.className} mt-2 text-[3.4rem] leading-[0.82] tracking-[-0.08em] text-[#13285c] sm:text-[4.4rem]`}
-            >
-              SYSTIA
-            </span>
-
-            <span className="mt-4 h-px w-20 bg-audit-border-subtle transition-all duration-300 group-hover:w-28" />
-          </a>
+  <span className="mt-2 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
+</a>
 
           <div className="inline-flex items-center rounded-full border border-audit-border-subtle bg-white/88 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-audit-subtle shadow-[0_8px_24px_rgba(31,39,64,0.04)] backdrop-blur-sm sm:text-[12px]">
             Diagnostic premium

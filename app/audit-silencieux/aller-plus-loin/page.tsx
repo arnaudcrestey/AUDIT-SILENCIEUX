@@ -7,21 +7,17 @@ export default function AllerPlusLoinPage() {
       <div className="mx-auto max-w-4xl space-y-6 sm:space-y-8">
         <header className="flex items-start justify-between gap-6">
           <a
-            href="https://arnaudcrestey.com"
-            target="_blank"
-            rel="noreferrer"
-            className="group inline-flex flex-col items-center text-center"
-          >
-            <span className="font-serif text-[2.35rem] leading-[0.9] tracking-[-0.07em] text-audit-ink sm:text-[2.75rem]">
-              AC
-            </span>
+  href="https://systia.fr"
+  target="_blank"
+  rel="noreferrer"
+  className="group inline-flex flex-col items-center text-center"
+>
+  <span className="font-serif text-[1.9rem] leading-none tracking-[-0.06em] text-audit-ink sm:text-[2.2rem] md:text-[2.4rem]">
+    SYSTIA
+  </span>
 
-            <span className="mt-0.5 block text-[0.9rem] font-normal leading-none tracking-[-0.01em] text-audit-ink sm:text-[0.96rem]">
-              arnaudcrestey.com
-            </span>
-
-            <span className="mt-3 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
-          </a>
+  <span className="mt-2 h-px w-10 bg-audit-border-subtle transition-all duration-300 group-hover:w-14" />
+</a>
 
           <div className="inline-flex items-center rounded-full border border-audit-border-subtle bg-white/88 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-audit-subtle shadow-[0_8px_24px_rgba(31,39,64,0.04)] backdrop-blur-sm sm:text-[12px]">
             Diagnostic premium
@@ -45,7 +41,7 @@ export default function AllerPlusLoinPage() {
 
           <div className="mt-6">
             <Link
-              href="https://arnaudcrestey.com/contact"
+              href="https://systia.fr/contact"
               className="inline-flex items-center justify-center rounded-xl bg-audit-blue px-6 py-3 text-[15px] font-medium text-white transition hover:bg-audit-blue-hover"
             >
               Parler de votre situation
@@ -99,7 +95,7 @@ export default function AllerPlusLoinPage() {
 
           <div className="mt-6">
             <Link
-              href="https://arnaudcrestey.com/contact"
+              href="https://systia.fr/contact"
               className="inline-flex items-center justify-center rounded-xl bg-audit-blue px-7 py-3 text-[15px] font-medium text-white shadow-[0_12px_28px_rgba(49,84,199,0.25)] transition hover:-translate-y-[1px] hover:bg-audit-blue-hover"
             >
               Ouvrir la discussion

@@ -1,6 +1,12 @@
+import { Bodoni_Moda } from "next/font/google";
 import { AuditInputCard } from "@/components/audit-silencieux/audit-input-card";
 import { AuditShell } from "@/components/audit-silencieux/audit-shell";
 import { TrustMicrocopy } from "@/components/audit-silencieux/trust-microcopy";
+
+const bodoni = Bodoni_Moda({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
 
 const benefits = [
   "Une lecture structurée et immédiate de ce que votre activité exprime vraiment.",
@@ -14,20 +20,22 @@ export default function AuditSilencieuxPage() {
       <div className="space-y-8 lg:space-y-9">
         <header className="flex items-start justify-between gap-6">
           <a
-            href="https://arnaudcrestey.com"
+            href="https://systia.fr"
             target="_blank"
             rel="noreferrer"
-            className="group inline-flex flex-col items-center text-center"
+            className="group inline-flex flex-col items-start"
           >
-            <span className="font-serif text-[2.35rem] leading-[0.9] tracking-[-0.07em] text-audit-ink sm:text-[2.75rem]">
-              AC
+            <div className="text-[0.7rem] font-medium uppercase tracking-[0.42em] text-audit-subtle">
+              Structuration d’activités
+            </div>
+
+            <span
+              className={`${bodoni.className} mt-2 text-[3.4rem] leading-[0.82] tracking-[-0.08em] text-[#13285c] sm:text-[4.4rem]`}
+            >
+              SYSTIA
             </span>
 
-            <span className="mt-0.5 block text-[0.9rem] font-normal leading-none tracking-[-0.01em] text-audit-ink sm:text-[0.96rem]">
-              arnaudcrestey.com
-            </span>
-
-            <span className="mt-3 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
+            <span className="mt-4 h-px w-20 bg-audit-border-subtle transition-all duration-300 group-hover:w-28" />
           </a>
 
           <div className="inline-flex items-center rounded-full border border-audit-border-subtle bg-white/88 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-audit-subtle shadow-[0_8px_24px_rgba(31,39,64,0.04)] backdrop-blur-sm sm:text-[12px]">
@@ -50,12 +58,14 @@ export default function AuditSilencieuxPage() {
             </h1>
 
             <p className="mt-7 max-w-[660px] text-[1rem] leading-[1.95] text-audit-subtle sm:text-[1.08rem]">
-  Collez l’URL de votre site, le texte d’une page ou une présentation écrite
-  de votre activité.
-  <span className="block mt-2">
-    Nous analysons ce que vos visiteurs comprennent réellement en vous découvrant.
-  </span>
-</p>
+              Collez l’URL de votre site, le texte d’une page ou une
+              présentation écrite de votre activité.
+
+              <span className="mt-2 block">
+                Nous analysons ce que vos visiteurs comprennent réellement en
+                vous découvrant.
+              </span>
+            </p>
           </div>
 
           <aside className="rounded-[32px] border border-audit-border-subtle bg-white/92 p-8 shadow-[0_16px_48px_rgba(31,39,64,0.05)] backdrop-blur-sm">
@@ -64,9 +74,9 @@ export default function AuditSilencieuxPage() {
             </div>
 
             <p className="mt-5 text-[0.98rem] leading-[2] text-audit-ink">
-              Aux professionnels de l’accompagnement, du conseil et aux activités
-              de service qui veulent mieux comprendre ce que leur présence en ligne
-              donne à percevoir dès les premières secondes.
+              Aux professionnels de l’accompagnement, du conseil et aux
+              activités de service qui veulent mieux comprendre ce que leur
+              présence en ligne donne à percevoir dès les premières secondes.
             </p>
 
             <div className="mt-9 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-audit-subtle">
@@ -81,12 +91,16 @@ export default function AuditSilencieuxPage() {
 
               <li className="flex gap-3">
                 <span className="mt-[11px] h-2 w-2 shrink-0 rounded-full bg-[#3154b8]" />
-                <span>Les écarts entre votre intention et la lecture client</span>
+                <span>
+                  Les écarts entre votre intention et la lecture client
+                </span>
               </li>
 
               <li className="flex gap-3">
                 <span className="mt-[11px] h-2 w-2 shrink-0 rounded-full bg-[#3154b8]" />
-                <span>La priorité la plus utile pour renforcer votre lisibilité</span>
+                <span>
+                  La priorité la plus utile pour renforcer votre lisibilité
+                </span>
               </li>
             </ul>
           </aside>

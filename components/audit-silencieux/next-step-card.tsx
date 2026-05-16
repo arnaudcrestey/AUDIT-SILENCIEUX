@@ -88,7 +88,7 @@ function getButtonLabel(mainGap?: string, buttonLabel?: string) {
     return "Structurer votre message";
   }
 
-  return "Optimiser votre point d’entrée";
+  return "Découvrir la suite";
 }
 
 function getRedirectPath() {

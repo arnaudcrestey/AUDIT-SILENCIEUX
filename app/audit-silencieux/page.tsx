@@ -26,12 +26,14 @@ export default function AuditSilencieuxPage() {
   className="group inline-flex flex-col items-center"
 >
   <span
-    className={`${bodoni.className} text-[2.6rem] leading-[0.9] tracking-[-0.07em] text-[#13285c] sm:text-[3.2rem]`}
+    className={`${bodoni.className} text-[1.9rem] leading-none tracking-[-0.06em] text-[#13285c]
+    sm:text-[2.2rem]
+    md:text-[2.4rem]`}
   >
     SYSTIA
   </span>
 
-  <span className="mt-2 h-px w-16 bg-audit-border-subtle transition-all duration-300 group-hover:w-24" />
+  <span className="mt-2 h-px w-10 bg-audit-border-subtle transition-all duration-300 group-hover:w-14" />
 </a>
 
           <div className="inline-flex items-center rounded-full border border-audit-border-subtle bg-white/88 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-audit-subtle shadow-[0_8px_24px_rgba(31,39,64,0.04)] backdrop-blur-sm sm:text-[12px]">
